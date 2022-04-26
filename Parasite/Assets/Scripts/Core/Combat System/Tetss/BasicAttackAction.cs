@@ -10,10 +10,24 @@ public class BasicAttackAction : ActionHolder
         [Min(0.05f)]public float actionDuration;
         public GameObject particles;
         Transform transform;
-        
+
+        public override ExecutableAction Clone()
+        {
+            return new BasicAction()
+            {
+                actionDuration = actionDuration,
+                particles = particles,
+                transform = transform,
+
+                //Copy fields from base class
+                DurationInBuffer = this.DurationInBuffer,
+                IsExecuting = false,
+            };
+        }
+
         public override void Execute()
         {
-            Debug.Log("Basic Attack");
+            SignalBus<SignalCameraShake>.Fire(new SignalCameraShake(0.2f, 0.1f));
             Instantiate(particles, transform.position, Quaternion.identity);
             SimulateDelay().Forget();
         }

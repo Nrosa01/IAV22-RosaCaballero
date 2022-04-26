@@ -2,6 +2,11 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
 
+public interface IClonable<T>
+{
+    public T Clone();
+}
+
 public interface IExecutableAction
 {
     public IExecutableAction priorExecutableAction { get; set; }
@@ -10,6 +15,7 @@ public interface IExecutableAction
     // antes de ser descartada.
     public float DurationInBuffer { get; set; }
     public float TimeLeft { get; set; }
+    public float PostRecheckTime { get; set; }
     public bool IsExecuting { get; set; }
 
     void Execute();
@@ -33,3 +39,5 @@ public interface IExecutableAction
 
     void CancelExecution();
 }
+
+public interface IExecutableAction<T> : IExecutableAction, IClonable<T> { }

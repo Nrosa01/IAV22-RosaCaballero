@@ -4,8 +4,17 @@ using System.Threading;
 using UnityEngine;
 
 [System.Serializable]
-public abstract class ExecutableAction : IExecutableAction
+public abstract class ExecutableAction : IExecutableAction<ExecutableAction>
 {
+    public ExecutableAction() { }
+    
+    public ExecutableAction(ExecutableAction actionToCopy)
+    {
+        this.DurationInBuffer = actionToCopy.DurationInBuffer;
+        this.TimeLeft = 0;
+        this.IsExecuting = false;
+    }
+    
     public abstract void Init(GameObject self);
     public IExecutableAction priorExecutableAction { get; set; }
 
@@ -13,6 +22,7 @@ public abstract class ExecutableAction : IExecutableAction
     // antes de ser descartada.
     [field: SerializeField] public float DurationInBuffer { get; set; }
     public float TimeLeft { get; set; }
+    [field: SerializeField] public float PostRecheckTime { get; set; } = 0.1f;
     public bool IsExecuting { get; set; } = false;
     public ActionBuffer Buffer { get; set; }
 
@@ -84,4 +94,6 @@ public abstract void Execute();
         ActionInBufferDuration(cancellationToken.Token).Forget();
         RecheckLoop(cancellationToken.Token).Forget();
     }
+
+    public abstract ExecutableAction Clone();
 }
