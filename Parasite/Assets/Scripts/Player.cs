@@ -12,6 +12,9 @@ public class Player : MonoBehaviour
 
     public Vector2 movementInput => _movementInput;
     [SerializeField] UnitSkills _skills;
+    Color defaultColor;
+    [SerializeField]Color selectedColor;
+    MeshRenderer meshRenderer;
 
 
     [HideInInspector] public Rigidbody rb; //Final movement vector, manipulated by the StateMachine actions
@@ -23,6 +26,8 @@ public class Player : MonoBehaviour
         _skills.Init(this.gameObject);
         _skills = _skills.GetNewInstance();
         rb = GetComponent<Rigidbody>();
+        meshRenderer = GetComponent<MeshRenderer>();
+        defaultColor = meshRenderer.material.color;
     }
 
     private void OnEnable()
@@ -59,11 +64,13 @@ public class Player : MonoBehaviour
     {
         if (phase == InputActionPhase.Performed)
         {
+            meshRenderer.material.color = selectedColor;
             cancellAttackToken = new CancellationTokenSource();
             TriggerAttack(cancellAttackToken.Token).Forget();
         }
         else if (phase == InputActionPhase.Canceled)
         {
+            meshRenderer.material.color = defaultColor;
             cancellAttackToken.Cancel();
         }
     }

@@ -649,6 +649,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputReader: {fileID: 11400000, guid: 307e1df20ac64a54795ff4d113a9050f, type: 2}
   _skills: {fileID: 11400000, guid: 1b0b64db9abb0d240a9978f8e87a23c2, type: 2}
+  selectedColor: {r: 0.9150943, g: 0.5050285, b: 0.5050285, a: 1}
   rb: {fileID: 0}
 --- !u!54 &1552300762
 Rigidbody:

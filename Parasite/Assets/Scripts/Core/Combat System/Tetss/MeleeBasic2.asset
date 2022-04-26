@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: MeleeBasic2
   m_EditorClassIdentifier: 
   action:
-    <DurationInBuffer>k__BackingField: 0.1
-    actionDuration: 1
+    <DurationInBuffer>k__BackingField: 0.05
+    <PostRecheckTime>k__BackingField: 0.1
+    actionDuration: 0.5
     particles: {fileID: 379582025491992484, guid: 6fdc11d419ade3a4bb394354405fda12,
       type: 3}

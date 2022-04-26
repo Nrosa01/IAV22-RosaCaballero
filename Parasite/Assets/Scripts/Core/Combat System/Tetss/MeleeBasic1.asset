@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   action:
     <DurationInBuffer>k__BackingField: 0.1
-    actionDuration: 1.25
+    <PostRecheckTime>k__BackingField: 0.1
+    actionDuration: 0.75
     particles: {fileID: 3888632499038711984, guid: df4676ad2fbafe545bed3302376ce646,
       type: 3}
