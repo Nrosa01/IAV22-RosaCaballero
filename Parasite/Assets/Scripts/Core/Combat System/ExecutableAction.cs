@@ -55,7 +55,8 @@ public abstract void Execute();
     {
         while (true)
         {
-            if (CheckCanExecute())
+            // Even if we can execute, we have to check we are the last action in the buffer (last = more priority)
+            if (CheckCanExecute() && Buffer.GetLastAction() == this)
             {
                 // There might be another of the same type in the buffer waiting, so we force it to stop
                 cancellationToken.Cancel();
