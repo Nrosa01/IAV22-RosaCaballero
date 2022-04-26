@@ -233,19 +233,37 @@ class Buffer<T>
 
         void CancelCurrentSkill()
         {
-            skills[currentSkill].CancelExecution();
-            buffer.Clear(); 
+            int skillBefore = currentSkill - 1;
+            if(skillBefore < 0)
+                skillBefore = skills.Count - 1;
+
+            // We cancel the action before the current action
+            // Because the current action is the one pending to be executed
+            // But the one that may be executed is the one before the current action
+            skills[skillBefore].CancelExecution();
         }
     }
 
     public class UnitSkills : ScriptableObject
     {
-        ActionBuffer<IExecutableAction> buffer;
+        Buffer<IExecutableAction> buffer;
 
         SkillSet<MeleeAction> meleeActions;
         SkillSet<RangedAction> rangedActions;
         SkillSet<MovementAction> movementActions;
         SkillSet<SignatureAction> signatureActions;
+
+        public void CancelCurrentAction()
+        {
+            // We dont't know which type of action is the current one
+            // So we cancel all of them
+            meleeActions.CancelCurrentSkill();
+            rangedActions.CancelCurrentSkill();
+            movementActions.CancelCurrentSkill();
+            signatureActions.CancelCurrentSkill();
+
+            buffer.Clear();
+        }
 
         public void ExecuteMeleeAction()
         {
@@ -298,6 +316,8 @@ class Buffer<T>
                 {
                     // Cancel currentAction, empty buffer
                     // Other script will handle damage and knockback
+                    _skills.CancelCurrentAction();
+
                 }
             }
         }
