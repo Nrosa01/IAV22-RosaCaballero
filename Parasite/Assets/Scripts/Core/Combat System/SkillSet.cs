@@ -13,15 +13,32 @@ public class SkillSet<T>  where T : ExecutableAction
     [HideInInspector]public List<T> _skills;
     public List<ActionHolder> skills; 
 
-    public SkillSet(List<T> _skills)
+    public SkillSet(List<ActionHolder> newSkills)
     {
-        // Copy elements from _skills to _skills
+        tokenSource = new CancellationTokenSource();
+        currentSkill = 0;
+        lastExecutedSkill = 0;
+
         this._skills = new List<T>();
 
-        for (int i = 0; i < _skills.Count; i++)
+        InitListFromHolders(newSkills);
+
+        foreach (var skill in _skills)
         {
-            this._skills.Add((T)_skills[i].Clone());
+            skill.ActionExecuted += ActionExecuted;
+            skill.ActionCancelled += ActionCancelled;
         }
+
+        if (_skills.Count == 0)
+        {
+            Debug.LogError("No skills in skill set");
+            return;
+        }
+
+        // Assign the action prior to other action 
+        _skills[0].priorExecutableAction = _skills[_skills.Count - 1];
+        for (int i = 1; i < _skills.Count; i++)
+            _skills[i].priorExecutableAction = _skills[i - 1];
     }
 
     async UniTaskVoid CooldownToResetSkill(CancellationToken token)
@@ -43,40 +60,30 @@ public class SkillSet<T>  where T : ExecutableAction
 
     public void Init(GameObject self)
     {
-        tokenSource = new CancellationTokenSource();
-        currentSkill = 0;
-        lastExecutedSkill = 0;
-        if(_skills == null)
+        InitActions(self);
+    }
+
+    void InitListFromHolders(List<ActionHolder> holders)
+    {
+        if (_skills == null)
             _skills = new List<T>();
         
-        if (skills != null && skills.Count != 0)
+        if (holders != null && holders.Count != 0)
         {
             //Copy holder to skill
-            for (int i = 0; i < skills.Count; i++)
+            for (int i = 0; i < holders.Count; i++)
             {
-                var action = skills[i].GetAction();
-                action.Init(self);
+                var action = holders[i].GetAction();
                 action.IsExecuting = false;
                 _skills.Add((T)(IExecutableAction)action);
             }
         }
+    }
 
-        if (_skills.Count == 0)
-        {
-            Debug.LogError("No skills in skill set");
-            return;
-        }
-
+    void InitActions(GameObject self)
+    {
         foreach (var skill in _skills)
-        {
-            skill.ActionExecuted += ActionExecuted;
-            skill.ActionCancelled += ActionCancelled;
-        }
-
-        // Assign the action prior to other action 
-        _skills[0].priorExecutableAction = _skills[_skills.Count - 1];
-        for (int i = 1; i < _skills.Count; i++)
-            _skills[i].priorExecutableAction = _skills[i - 1];
+            skill.Init(self);
     }
 
     ~SkillSet()
@@ -137,7 +144,7 @@ public class SkillSet<T>  where T : ExecutableAction
 
     public SkillSet<T> GetNewInstance()
     {
-        SkillSet<T> skillset = new SkillSet<T>(this._skills);
-        return this;
+        SkillSet<T> skillset = new SkillSet<T>(this.skills);
+        return skillset;
     }
 }

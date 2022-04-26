@@ -19,8 +19,9 @@ public class BasicAttackAction : ActionHolder
                 particles = particles,
                 transform = transform,
 
-                //Copy fields from base class
+                //Copy fields from base class, I should use a copy constructor but I'm too lazy
                 DurationInBuffer = this.DurationInBuffer,
+                PostRecheckTime = this.PostRecheckTime,
                 IsExecuting = false,
             };
         }
@@ -49,6 +50,6 @@ public class BasicAttackAction : ActionHolder
 
     public override ExecutableAction GetAction()
     {
-        return action;
+        return action.Clone();
     }
 }

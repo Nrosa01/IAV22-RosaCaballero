@@ -23,8 +23,8 @@ public class Player : MonoBehaviour
     {
         if(_skills  == null)
             throw new Exception("Player: Skills not set");
-        _skills.Init(this.gameObject);
         _skills = _skills.GetNewInstance();
+        _skills.Init(this.gameObject);
         rb = GetComponent<Rigidbody>();
         meshRenderer = GetComponent<MeshRenderer>();
         defaultColor = meshRenderer.material.color;

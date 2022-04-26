@@ -4,6 +4,7 @@ using UnityEngine;
 public class UnitSkills : ScriptableObject
 {
     ActionBuffer buffer = new ActionBuffer();
+    bool isCloned = false;
 
    [SerializeField] SkillSet<MeleeAction> meleeActions;
    [SerializeField] SkillSet<RangedAction> rangedActions;
@@ -12,7 +13,9 @@ public class UnitSkills : ScriptableObject
 
     public void Init(GameObject self)
     {
-        Debug.Log("UnitSkills.OnEnable");
+        if(!isCloned)
+            throw new System.Exception("UnitSkills must be cloned before being initialized");
+        
         meleeActions.Init(self);
         rangedActions.Init(self);
         movementActions.Init(self);
@@ -53,11 +56,12 @@ public class UnitSkills : ScriptableObject
 
     public UnitSkills GetNewInstance()
     {
-        UnitSkills skills = ScriptableObject.CreateInstance<UnitSkills>();
-        skills.movementActions = movementActions.GetNewInstance();
-        skills.rangedActions = rangedActions.GetNewInstance();
-        skills.meleeActions = meleeActions.GetNewInstance();
-        skills.signatureActions = signatureActions.GetNewInstance();
+        UnitSkills skills = this.Clone();
+        skills.meleeActions = new SkillSet<MeleeAction>(meleeActions.skills);
+        skills.movementActions = new SkillSet<MovementAction>(movementActions.skills);
+        skills.rangedActions = new SkillSet<RangedAction>(rangedActions.skills);
+        skills.signatureActions = new SkillSet<SignatureAction>(signatureActions.skills);
+        skills.isCloned = true;
 
         return skills;
     }

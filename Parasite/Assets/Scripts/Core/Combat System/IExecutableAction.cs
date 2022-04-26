@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
+using UnityEngine;
 
 public interface IClonable<T>
 {
@@ -38,6 +39,9 @@ public interface IExecutableAction
     UniTaskVoid RecheckLoop(CancellationToken cancellation);
 
     void CancelExecution();
+
+    public void Init(GameObject self);
+    
 }
 
 public interface IExecutableAction<T> : IExecutableAction, IClonable<T> { }
