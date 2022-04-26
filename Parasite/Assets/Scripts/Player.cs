@@ -11,14 +11,17 @@ public class Player : MonoBehaviour
     private Vector2 _movementInput; //Initial input coming from the Protagonist script
 
     public Vector2 movementInput => _movementInput;
-
+    [SerializeField] UnitSkills _skills;
 
 
     [HideInInspector] public Rigidbody rb; //Final movement vector, manipulated by the StateMachine actions
 
     private void Awake()
     {
-        Debug.Log("Awake");
+        if(_skills  == null)
+            throw new Exception("Player: Skills not set");
+        _skills.Init(this.gameObject);
+        _skills = _skills.GetNewInstance();
         rb = GetComponent<Rigidbody>();
     }
 
@@ -28,6 +31,7 @@ public class Player : MonoBehaviour
         _inputReader.finishMoveEvent += OnStop;
         _inputReader.attackEvent += OnAttack;
         _inputReader.dashEvent += OnDash;
+        AttackRequested += _skills.ExecuteMeleeAction;
     }
 
     private void OnDisable()
@@ -36,6 +40,7 @@ public class Player : MonoBehaviour
         _inputReader.finishMoveEvent -= OnStop;
         _inputReader.attackEvent -= OnAttack;
         _inputReader.dashEvent -= OnDash;
+        AttackRequested -= _skills.ExecuteMeleeAction;
 
     }
 

@@ -154,29 +154,6 @@ class Buffer<T>
     
     ```csharp
 
-    public class Unit
-    {
-        public Buffer<IExecutableAction> buffer;
-        public IExecutableAction currentAction;
-
-        public Unit(Buffer<IExecutableAction> buffer)
-        {
-            this.buffer = buffer;
-        }
-
-        public void ExecuteAction(IExecutableAction action)
-        {
-            currentAction = action;
-            action.Execute();
-        }
-
-        public void CancelAction()
-        {
-            currentAction.Cancel();
-            currentAction = null;
-        }
-    }
-
     public class SkillSet<T> : where T : IExecutableAction
     {
         int currentSkill = 0;
