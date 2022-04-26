@@ -30,7 +30,7 @@ public class Buffer<T>
         return buffer[buffer.Count - 1];
     }
 
-    public void Clear()
+    public virtual void Clear()
     {
         buffer.Clear();
     }
@@ -50,4 +50,12 @@ public class ActionBuffer : Buffer<IExecutableAction>
         base.Remove(action);
         action.OnActionRemoved();
     }
+
+    public override void Clear()
+    {
+        foreach (var action in buffer)
+            action.OnActionRemoved();
+        base.Clear();
+    }
+
 }

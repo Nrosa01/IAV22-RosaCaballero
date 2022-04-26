@@ -22,10 +22,11 @@ public class SkillSet<T>  where T : IExecutableAction
             return;
         
         //Copy holder to skill
-        for (int i = 0; i < skills.Count - 1; i++)
+        for (int i = 0; i < skills.Count; i++)
         {
             var action = skills[i].GetAction();
             action.Init(self);
+            action.IsExecuting = false;
             _skills.Add((T)(IExecutableAction)action);
         }
 
@@ -37,7 +38,7 @@ public class SkillSet<T>  where T : IExecutableAction
 
         // Assign the action prior to other action 
         _skills[0].priorExecutableAction = _skills[0];
-        for (int i = 1; i < _skills.Count - 1; i++)
+        for (int i = 1; i < _skills.Count; i++)
             _skills[i].priorExecutableAction = _skills[i - 1];
     }
 
