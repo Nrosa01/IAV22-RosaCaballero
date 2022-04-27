@@ -15,7 +15,8 @@ public class BasicSlash : MonoBehaviour
 
     private void Start()
     {
-        _inputReader.attackEvent += OnAttack;
+        //_inputReader.attackEvent += OnAttack;
+        StartCoroutine(Slash());
     }
 
     private void OnAttack(InputActionPhase phase)
@@ -31,6 +32,7 @@ public class BasicSlash : MonoBehaviour
     {
         float time = 0.000001f;
         followObject.SetActive(true);
+        //followObject.GetComponent<MeshRenderer>().enabled = true;
         while (time < lerpDuration)
         {
             time += Time.deltaTime;
@@ -39,7 +41,9 @@ public class BasicSlash : MonoBehaviour
             yield return null;
         }
 
+        //followObject.GetComponent<MeshRenderer>().enabled = false;
         followObject.SetActive(false);
+        Destroy(this.gameObject);
     }
 
     void OnDrawGizmos()

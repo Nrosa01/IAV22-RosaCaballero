@@ -29,7 +29,7 @@ public class BasicAttackAction : ActionHolder
         public override void Execute()
         {
             SignalBus<SignalCameraShake>.Fire(new SignalCameraShake(0.2f, 0.1f));
-            Instantiate(particles, transform.position, Quaternion.identity);
+            Instantiate(particles, transform.position, transform.rotation);
             SimulateDelay().Forget();
         }
 
