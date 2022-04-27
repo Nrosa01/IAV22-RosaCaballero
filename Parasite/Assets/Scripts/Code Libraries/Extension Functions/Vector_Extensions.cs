@@ -24,7 +24,7 @@ public static class Vector_Extensions
     }
 
     public static float SquaredDistance(Vector2 a, Vector2 b) => (a - b).sqrMagnitude;
-    public static float DistanceFast(Vector2 a, Vector2 b) => MathsFast.FastMagnitude(a-b);
+    public static float DistanceFast(Vector2 a, Vector2 b) => MathsFast.FastMagnitude(a - b);
 
     public static Vector3 Rounded(this Vector3 v) => new Vector3(Mathf.Round(v.x), Mathf.Round(v.y), Mathf.Round(v.z));
 
@@ -32,6 +32,14 @@ public static class Vector_Extensions
     {
         Vector2 direction = (to - from).normalized;
         return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+    }
+
+    public static Vector3 Slerp(Vector3 start, Vector3 end, Vector3 center, float t)
+    {
+        var startRelativeCenter = start - center;
+        var endRelativeCenter = end - center;
+
+        return Vector3.Slerp(startRelativeCenter, endRelativeCenter, t) + center;
     }
 }
 
