@@ -8,7 +8,7 @@ public class BasicAttackAction : ActionHolder
     class BasicAction : MeleeAction
     {
         [Min(0.05f)]public float actionDuration;
-        public GameObject particles;
+        public ICancellableAction particles;
         Transform transform;
 
         public override ExecutableAction Clone()
@@ -28,8 +28,9 @@ public class BasicAttackAction : ActionHolder
 
         public override void Execute()
         {
-            SignalBus<SignalCameraShake>.Fire(new SignalCameraShake(0.2f, 0.1f));
-            Instantiate(particles, transform.position, transform.rotation);
+            //SignalBus<SignalCameraShake>.Fire(new SignalCameraShake(0.2f, 0.1f));
+            var go = Instantiate(particles, transform.position, transform.rotation);
+            go.DoAction(actionDuration, this.cancellationToken.Token);
             SimulateDelay().Forget();
         }
 

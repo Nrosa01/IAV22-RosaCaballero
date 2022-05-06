@@ -15,6 +15,6 @@ MonoBehaviour:
   action:
     <DurationInBuffer>k__BackingField: 0.2
     <PostRecheckTime>k__BackingField: 0.1
-    actionDuration: 0.5
-    particles: {fileID: 8617359127468751778, guid: d34506ebdbcb86d46a5be4710b13b3dc,
+    actionDuration: 2
+    particles: {fileID: 7023637099497667740, guid: d34506ebdbcb86d46a5be4710b13b3dc,
       type: 3}

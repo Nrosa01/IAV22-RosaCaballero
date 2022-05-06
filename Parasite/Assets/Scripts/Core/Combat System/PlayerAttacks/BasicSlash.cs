@@ -1,47 +1,37 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class BasicSlash : MonoBehaviour
+public class BasicSlash : ICancellableAction
 {
     [SerializeField] private Transform _start, _center, _end;
     [SerializeField] private int _count = 15;
     public GameObject followObject;
-    public float lerpDuration = 0.5f;
     public AnimationCurve curve;
-    [SerializeField] public InputReader _inputReader = default;
 
-
-    private void Start()
+    public override void DoAction(float duration, CancellationToken token)
     {
-        //_inputReader.attackEvent += OnAttack;
-        StartCoroutine(Slash());
+        Slash(duration, token).Forget();
     }
 
-    private void OnAttack(InputActionPhase phase)
-    {
-        if (phase == InputActionPhase.Performed)
-        {
-            StopAllCoroutines();
-            StartCoroutine(Slash());
-        }
-    }
-
-    private IEnumerator Slash()
+    private async UniTaskVoid Slash(float duration, CancellationToken token)
     {
         float time = 0.000001f;
         followObject.SetActive(true);
         //followObject.GetComponent<MeshRenderer>().enabled = true;
-        while (time < lerpDuration)
+        while (time < duration)
         {
             time += Time.deltaTime;
-            followObject.transform.position = Vector_Extensions.Slerp(_start.position, _end.position, _center.position, curve.Evaluate(time / lerpDuration));
+            followObject.transform.position = Vector_Extensions.Slerp(_start.position, _end.position, _center.position, curve.Evaluate(time / duration));
             followObject.transform.LookAt(this.transform);
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update);
+            if (token.IsCancellationRequested)
+                break;
         }
 
-        //followObject.GetComponent<MeshRenderer>().enabled = false;
         followObject.SetActive(false);
         Destroy(this.gameObject);
     }

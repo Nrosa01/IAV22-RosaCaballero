@@ -31,7 +31,7 @@ public class SkillSet<T>  where T : ExecutableAction
 
         if (_skills.Count == 0)
         {
-            Debug.LogError("No skills in skill set");
+            //Debug.LogError("No skills in skill set");
             return;
         }
 
@@ -138,6 +138,9 @@ public class SkillSet<T>  where T : ExecutableAction
 
     public void CancelCurrentSkill()
     {
+        if (_skills.Count == 0)
+            return;
+
         _skills[lastExecutedSkill].CancelExecution();
         currentSkill = 0;
     }

@@ -56,7 +56,11 @@ public class Player : MonoBehaviour
 
     private void OnStop() => _movementInput = Vector2.zero;
 
-    private void OnDash() => DashRequested?.Invoke();
+    private void OnDash()
+    {
+        _skills.CancelCurrentAction();
+        DashRequested?.Invoke();
+    }
 
 
     private CancellationTokenSource cancellAttackToken = new CancellationTokenSource();

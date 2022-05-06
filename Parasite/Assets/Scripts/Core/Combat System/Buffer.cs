@@ -38,7 +38,7 @@ public class Buffer<T>
 public class ActionBuffer : Buffer<IExecutableAction> 
 {
     public ActionBuffer(int maxSize = 3) : base(maxSize) {}
-    
+
     public override void Add(IExecutableAction action)
     {
         base.Add(action);

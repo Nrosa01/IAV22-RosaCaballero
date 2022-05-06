@@ -6,16 +6,16 @@ public class UnitSkills : ScriptableObject
     ActionBuffer buffer = new ActionBuffer();
     bool isCloned = false;
 
-   [SerializeField] SkillSet<MeleeAction> meleeActions;
-   [SerializeField] SkillSet<RangedAction> rangedActions;
-   [SerializeField] SkillSet<MovementAction> movementActions;
-   [SerializeField] SkillSet<SignatureAction> signatureActions;
+    [SerializeField] SkillSet<MeleeAction> meleeActions;
+    [SerializeField] SkillSet<RangedAction> rangedActions;
+    [SerializeField] SkillSet<MovementAction> movementActions;
+    [SerializeField] SkillSet<SignatureAction> signatureActions;
 
     public void Init(GameObject self)
     {
-        if(!isCloned)
+        if (!isCloned)
             throw new System.Exception("UnitSkills must be cloned before being initialized");
-        
+
         meleeActions.Init(self);
         rangedActions.Init(self);
         movementActions.Init(self);
