@@ -42,7 +42,7 @@ public class BasicAttackAction : ActionHolder
         async UniTaskVoid SimulateDelay()
         {
             int secondToMilliseconds = 1000;
-            await UniTask.Delay((int)(actionDuration * secondToMilliseconds));
+            await UniTask.Delay((int)(actionDuration * secondToMilliseconds),false, PlayerLoopTiming.Update,cancellationToken.Token);
             IsExecuting = false;
         }
     }
