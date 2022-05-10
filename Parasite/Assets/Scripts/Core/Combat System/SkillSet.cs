@@ -11,9 +11,9 @@ public class SkillSet<T>  where T : ExecutableAction
     int lastExecutedSkill = 0;
 
     [HideInInspector]public List<T> _skills;
-    public List<ActionHolder> skills; 
+    public List<T> skills => _skills; 
 
-    public SkillSet(List<ActionHolder> newSkills)
+    public SkillSet(List<T> newSkills)
     {
         tokenSource = new CancellationTokenSource();
         currentSkill = 0;
@@ -63,7 +63,7 @@ public class SkillSet<T>  where T : ExecutableAction
         InitActions(self);
     }
 
-    void InitListFromHolders(List<ActionHolder> holders)
+    void InitListFromHolders(List<T> holders)
     {
         if (_skills == null)
             _skills = new List<T>();
@@ -73,9 +73,9 @@ public class SkillSet<T>  where T : ExecutableAction
             //Copy holder to skill
             for (int i = 0; i < holders.Count; i++)
             {
-                var action = holders[i].GetAction();
+                var action = holders[i].Clone();
                 action.IsExecuting = false;
-                _skills.Add((T)(IExecutableAction)action);
+                _skills.Add((T)action);
             }
         }
     }
@@ -147,7 +147,7 @@ public class SkillSet<T>  where T : ExecutableAction
 
     public SkillSet<T> GetNewInstance()
     {
-        SkillSet<T> skillset = new SkillSet<T>(this.skills);
+        SkillSet<T> skillset = new SkillSet<T>(_skills);
         return skillset;
     }
 }

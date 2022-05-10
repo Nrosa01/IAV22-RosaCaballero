@@ -3,11 +3,6 @@ using System;
 using System.Threading;
 using UnityEngine;
 
-public interface IClonable<T>
-{
-    public T Clone();
-}
-
 public interface IExecutableAction
 {
     public IExecutableAction priorExecutableAction { get; set; }

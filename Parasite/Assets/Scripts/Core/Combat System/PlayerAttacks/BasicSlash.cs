@@ -27,7 +27,7 @@ public class BasicSlash : ICancellableAction
             time += Time.deltaTime;
             followObject.transform.position = Vector_Extensions.Slerp(_start.position, _end.position, _center.position, curve.Evaluate(time / duration));
             followObject.transform.LookAt(this.transform);
-            await UniTask.Yield(PlayerLoopTiming.Update);
+            await UniTask.Yield(PlayerLoopTiming.Update, this.GetCancellationTokenOnDestroy());
             if (token.IsCancellationRequested)
                 break;
         }
