@@ -11,7 +11,8 @@ public class Player : MonoBehaviour
     private Vector2 _movementInput; //Initial input coming from the Protagonist script
 
     public Vector2 movementInput => _movementInput;
-    [SerializeField] UnitSkills _skills;
+    [SerializeField] UnitSkills_SO _skills;
+    UnitSkills skills;
     Color defaultColor;
     [SerializeField]Color selectedColor;
     MeshRenderer meshRenderer;
@@ -23,8 +24,8 @@ public class Player : MonoBehaviour
     {
         if(_skills  == null)
             throw new Exception("Player: Skills not set");
-        _skills = _skills.GetNewInstance();
-        _skills.Init(this.gameObject);
+        skills = _skills.GetNewInstance();
+        skills.Init(this.gameObject);
         rb = GetComponent<Rigidbody>();
         meshRenderer = GetComponent<MeshRenderer>();
         defaultColor = meshRenderer.material.color;
@@ -36,7 +37,7 @@ public class Player : MonoBehaviour
         _inputReader.finishMoveEvent += OnStop;
         _inputReader.attackEvent += OnAttack;
         _inputReader.dashEvent += OnDash;
-        AttackRequested += _skills.ExecuteMeleeAction;
+        AttackRequested += skills.ExecuteMeleeAction;
     }
 
     private void OnDisable()
@@ -45,7 +46,7 @@ public class Player : MonoBehaviour
         _inputReader.finishMoveEvent -= OnStop;
         _inputReader.attackEvent -= OnAttack;
         _inputReader.dashEvent -= OnDash;
-        AttackRequested -= _skills.ExecuteMeleeAction;
+        AttackRequested -= skills.ExecuteMeleeAction;
 
     }
 
@@ -58,7 +59,7 @@ public class Player : MonoBehaviour
 
     private void OnDash()
     {
-        _skills.CancelCurrentAction();
+        skills.CancelCurrentAction();
         DashRequested?.Invoke();
     }
 

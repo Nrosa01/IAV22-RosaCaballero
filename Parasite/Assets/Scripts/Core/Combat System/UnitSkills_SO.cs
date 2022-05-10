@@ -1,7 +1,15 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "UnitSkills", menuName = "UnitSkills")]
-public class UnitSkills : ScriptableObject
+public class UnitSkills_SO : ScriptableObject
+{
+    [SerializeField] UnitSkills unitSkills;
+
+    public UnitSkills GetNewInstance() => unitSkills.GetNewInstance();
+}
+
+[System.Serializable]
+public class UnitSkills
 {
     ActionBuffer buffer = new ActionBuffer();
     bool isCloned = false;
@@ -53,10 +61,10 @@ public class UnitSkills : ScriptableObject
     {
         buffer.Add(signatureActions.GetCurrentSkill());
     }
-
+    
     public UnitSkills GetNewInstance()
     {
-        UnitSkills skills = this.Clone();
+        UnitSkills skills = new UnitSkills();
         skills.meleeActions = new SkillSet<MeleeAction>(meleeActions.skills);
         skills.movementActions = new SkillSet<MovementAction>(movementActions.skills);
         skills.rangedActions = new SkillSet<RangedAction>(rangedActions.skills);
