@@ -12,4 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c48f2a9e8b5ea3647be7f51d8ad4b6c3, type: 3}
   m_Name: BasicActionSet
   m_EditorClassIdentifier: 
-  actions: []
+  actions:
+  - <DurationInBuffer>k__BackingField: 0.2
+    <PostRecheckTime>k__BackingField: 0.1
+    actionDuration: 2
+    particles: {fileID: 7023637099497667740, guid: d34506ebdbcb86d46a5be4710b13b3dc,
+      type: 3}
+  - <DurationInBuffer>k__BackingField: 0.2
+    <PostRecheckTime>k__BackingField: 0.1
+    actionDuration: 0.75
+    particles: {fileID: 7023637099497667740, guid: aca5b470c3b4dce4397e9edd58b00d29,
+      type: 3}
+  - <DurationInBuffer>k__BackingField: 0.05
+    <PostRecheckTime>k__BackingField: 0.1
+    actionDuration: 0.5
+    particles: {fileID: 7023637099497667740, guid: d9cce4e92ca46dc4abf3d0a69253c7fd,
+      type: 3}
