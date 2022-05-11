@@ -17,6 +17,26 @@ public class CameraFollowTargetGroup : MonoBehaviour
         return (first.position + other.position) / 2;
     }
 
+    private void LateUpdate()
+    {
+        FollowGroup();
+    }
+
+    private void FollowGroup()
+    {
+        float distance = Vector3.Distance(other.position, this.first.position);
+        distance *= multiplicador;
+
+        // Clamp distance
+        float unclampedDistance = Mathf.Clamp(distance, minRadius, distance);
+        distance = Mathf.Clamp(distance, minRadius, maxRadius);
+
+        transform.LookAt(target);
+        Vector3 average = GetAverage();
+        Vector3 closestz = first.transform.position.z > other.transform.position.z ? other.position : first.position;
+        this.transform.position = new Vector3(average.x, closestz.y + distance, average.z - (target.forward * unclampedDistance).z);
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -34,7 +54,7 @@ public class CameraFollowTargetGroup : MonoBehaviour
             Gizmos.DrawWireSphere(this.first.position, distance);
 
         Gizmos.DrawSphere(GetAverage(), 1.0f);
-        
+
         transform.LookAt(target);
         Vector3 average = GetAverage();
         Vector3 closestz = first.transform.position.z > other.transform.position.z ? other.position : first.position;

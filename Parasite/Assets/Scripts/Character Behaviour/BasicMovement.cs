@@ -28,7 +28,7 @@ public class BasicMovement : MonoBehaviour
         float rotation = Mathf.Atan2(previousMovement.x, previousMovement.y);
 
         // Create a quaternion (rotation) based on the rotation around the Y axis
-        Quaternion q = Quaternion.Euler(0f, rotation * Mathf.Rad2Deg, 0f);
+        Quaternion q = Quaternion.Euler(0f, rotation * Mathf.Rad2Deg + cam.transform.parent.localEulerAngles.y, 0f);
 
         // Set the player's rotation to the quaternion
         rb.rotation = q;
