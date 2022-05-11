@@ -13,6 +13,7 @@ public interface IExecutableAction
     public float TimeLeft { get; set; }
     public float PostRecheckTime { get; set; }
     public bool IsExecuting { get; set; }
+    public bool HasCooldown { get; set; }
 
     void Execute();
 

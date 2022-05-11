@@ -50,7 +50,7 @@ public class SkillSet<T>  where T : ExecutableAction
             await UniTask.Yield(PlayerLoopTiming.Update, token);
 
         // Extra time
-        int milliseconds = (int)(1000 * currentSkill.PostRecheckTime);
+        int milliseconds = (int)(1000 * currentSkill.PostRecheckTime) + (int)(1000 * currentSkill.delayToNextAction);
         await UniTask.Delay(milliseconds, false, PlayerLoopTiming.Update, token);
 
         // Reset skill if token is not cancelled

@@ -43,12 +43,18 @@ public class UnitSkills
         buffer.Clear();
     }
 
-    public void ExecuteMeleeAction() => buffer.Add(meleeActions.GetCurrentSkill());
-    public void ExecuteRangedAction() => buffer.Add(rangedActions.GetCurrentSkill());
+    public void ExecuteMeleeAction() => TryAddAction(meleeActions.GetCurrentSkill());
+    public void ExecuteRangedAction() => TryAddAction(rangedActions.GetCurrentSkill());
 
-    public void ExecuteMovementAction() => buffer.Add(movementActions.GetCurrentSkill());
+    public void ExecuteMovementAction() => TryAddAction(movementActions.GetCurrentSkill());
 
-    public void ExecuteSignatureAction() => buffer.Add(signatureActions.GetCurrentSkill());
+    public void ExecuteSignatureAction() => TryAddAction(signatureActions.GetCurrentSkill());
+
+    private void TryAddAction(CancellableSpawneableAction action)
+    {
+        if (action != null && !action.IsExecuting && !action.HasCooldown)
+            buffer.Add(action);
+    }
 
     public UnitSkills GetNewInstance()
     {

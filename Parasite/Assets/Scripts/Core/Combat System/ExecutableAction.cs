@@ -24,13 +24,17 @@ public abstract class ExecutableAction : IExecutableAction<ExecutableAction>
     [Tooltip("Time in seconds since the action finish it will be buffered before being discarded. Once this time is reached, current " +
         "action will be reset to 0")]
     [field: SerializeField] public float PostRecheckTime { get; set; } = 0.1f;
+    [Tooltip("Action duration in seconds")][Min(0.05f)] public float actionDuration;
+    [Tooltip("Sort of cooldown, time needed before you can execute next action")][Min(0.0f)] public float delayToNextAction;
     public bool IsExecuting { get; set; } = false;
+    public bool HasCooldown { get; set; }
+    
     public ActionBuffer Buffer { get; set; }
 
     public abstract void Execute();
 
     // Usually here we see if the last action finished executing
-    public virtual bool CheckCanExecute() => !priorExecutableAction.IsExecuting && Buffer.GetLastAction() == this;
+    public virtual bool CheckCanExecute() => !priorExecutableAction.IsExecuting && !priorExecutableAction.HasCooldown && Buffer.GetLastAction() == this;
 
     public event Action ActionExecuted;
     public event Action ActionCancelled;
@@ -63,8 +67,10 @@ public abstract class ExecutableAction : IExecutableAction<ExecutableAction>
                 GenericExtensions.CancelAndGenerateNew(ref cancellationToken);
                 Execute();
                 IsExecuting = true;
+                HasCooldown = true;
                 ActionExecuted?.Invoke();
                 Buffer.Remove(this);
+                SimulateDelay().Forget();
                 break;
             }
             await UniTask.Yield(PlayerLoopTiming.Update, cancellation);
@@ -76,6 +82,16 @@ public abstract class ExecutableAction : IExecutableAction<ExecutableAction>
         //Debug.Log("Action executed");
     }
 
+    async UniTaskVoid SimulateDelay()
+    {
+        int secondToMilliseconds = 1000;
+        await UniTask.Delay((int)(actionDuration * secondToMilliseconds), false, PlayerLoopTiming.Update, cancellationToken.Token);
+        IsExecuting = false;
+        Debug.Log(delayToNextAction);
+        await UniTask.Delay((int)(delayToNextAction * secondToMilliseconds), false, PlayerLoopTiming.Update, cancellationToken.Token);
+        HasCooldown = false;
+    }
+
     public void CancelExecution()
     {
         if (IsExecuting)
@@ -83,18 +99,19 @@ public abstract class ExecutableAction : IExecutableAction<ExecutableAction>
             ActionCancelled?.Invoke();
             cancellationToken.Cancel();
             IsExecuting = false;
+            HasCooldown = false;
         }
     }
 
     public void OnActionRemoved()
     {
-        if (!IsExecuting)
+        if (!IsExecuting && !HasCooldown)
             cancellationToken.Cancel();
     }
 
     public void OnActionInserted(ActionBuffer actionBuffer)
     {
-        if (IsExecuting)
+        if (IsExecuting || HasCooldown)
         {
             actionBuffer.Remove(this);
             return;

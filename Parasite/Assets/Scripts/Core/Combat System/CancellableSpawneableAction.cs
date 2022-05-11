@@ -3,7 +3,6 @@ using UnityEngine;
 
 [System.Serializable] public class CancellableSpawneableAction : ExecutableAction
 {
-    [Min(0.05f)] public float actionDuration;
     public ICancellableAction particles;
     Transform transform;
 
@@ -12,19 +11,12 @@ using UnityEngine;
         //SignalBus<SignalCameraShake>.Fire(new SignalCameraShake(0.2f, 0.1f));
         var go = GameObject.Instantiate(particles, transform.position, transform.rotation);
         go.DoAction(actionDuration, this.cancellationToken.Token);
-        SimulateDelay().Forget();
+        go.transform.SetParent(transform);
     }
 
     public override void Init(GameObject self)
     {
         transform = self.transform;
-    }
-
-    async UniTaskVoid SimulateDelay()
-    {
-        int secondToMilliseconds = 1000;
-        await UniTask.Delay((int)(actionDuration * secondToMilliseconds), false, PlayerLoopTiming.Update, cancellationToken.Token);
-        IsExecuting = false;
     }
 
     public override ExecutableAction Clone()
@@ -39,6 +31,8 @@ using UnityEngine;
             DurationInBuffer = this.DurationInBuffer,
             PostRecheckTime = this.PostRecheckTime,
             IsExecuting = false,
+            HasCooldown = this.HasCooldown,
+            delayToNextAction = this.delayToNextAction,
         };
     }
 }

@@ -36,7 +36,8 @@ public class BasicMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        float canMove = p.movementInput == Vector2.zero ? 0 : 1;
+        int canMove = p.movementInput == Vector2.zero ? 0 : 1;
+        if (rb.velocity.sqrMagnitude < 0.01f && canMove == 0) return;
         rb.AccelerateTo(transform.forward * maxSpeed * canMove, acceleration);
     }
 }
