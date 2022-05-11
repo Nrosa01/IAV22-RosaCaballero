@@ -11,6 +11,7 @@ public class CameraFollowTargetGroup : MonoBehaviour
     public float maxRadius;
     public float minRadius;
     public float multiplicador;
+    public Transform dynamicObjects;
 
     public Vector3 GetAverage()
     {
@@ -34,17 +35,17 @@ public class CameraFollowTargetGroup : MonoBehaviour
         transform.LookAt(target);
         Vector3 average = GetAverage();
         Vector3 closestz = first.transform.position.z > other.transform.position.z ? other.position : first.position;
-        this.transform.position = new Vector3(average.x, closestz.y + distance, average.z - (target.forward * unclampedDistance).z);
+        this.transform.position = new Vector3(average.x, average.y + distance, average.z - (target.forward * distance).z);
     }
 
     private void OnDrawGizmos()
     {
+        if (!enabled) return;
         Gizmos.color = Color.red;
         float distance = Vector3.Distance(other.position, this.first.position);
         distance *= multiplicador;
 
         // Clamp distance
-        float unclampedDistance = Mathf.Clamp(distance, minRadius, distance);
         distance = Mathf.Clamp(distance, minRadius, maxRadius);
 
         // Draw sphere
@@ -55,9 +56,6 @@ public class CameraFollowTargetGroup : MonoBehaviour
 
         Gizmos.DrawSphere(GetAverage(), 1.0f);
 
-        transform.LookAt(target);
-        Vector3 average = GetAverage();
-        Vector3 closestz = first.transform.position.z > other.transform.position.z ? other.position : first.position;
-        this.transform.position = new Vector3(average.x, closestz.y + distance, average.z - (target.forward * unclampedDistance).z);
+        FollowGroup();
     }
 }
