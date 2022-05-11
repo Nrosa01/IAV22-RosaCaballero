@@ -156,7 +156,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Gamepad Left Stick"",
                     ""id"": ""e4bb0775-5bab-43c6-bac1-390f084a6935"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": ""StickDeadzone"",
                     ""groups"": """",
@@ -211,7 +211,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Keyboard WASD"",
                     ""id"": ""d46b4661-34c3-44bf-be8e-72f362adb4f0"",
-                    ""path"": ""2DVector(mode=1)"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -266,7 +266,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Gamepad Left DPad"",
                     ""id"": ""167489f4-14e8-4e3a-83ec-722bc5753af2"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

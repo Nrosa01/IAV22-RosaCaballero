@@ -41,6 +41,11 @@ public static class Vector_Extensions
 
         return Vector3.Slerp(startRelativeCenter, endRelativeCenter, t) + center;
     }
+
+
+    public static Vector3 SetX(this Vector3 vec, float x) => new Vector3(x, vec.y, vec.z);
+    public static Vector3 SetY(this Vector3 vec, float y) => new Vector3(vec.x, y, vec.z);
+    public static Vector3 SetZ(this Vector3 vec, float z) => new Vector3(vec.x, vec.y, z);
 }
 
 public static class MathsFast

@@ -15,4 +15,16 @@ public static class Rigidbody_Extensions
         rb.AddForce(acceleration, ForceMode2D.Force);
         return acceleration;
     }
+
+    public static float3 AccelerateTo(this Rigidbody rb, Vector3 targetVelocity, float maxAcceleration = float.PositiveInfinity)
+    {
+        Vector3 deltaVelocity = targetVelocity - rb.velocity;
+        float3 acceleration = deltaVelocity / Time.deltaTime;
+
+        if (lengthsq(acceleration) > maxAcceleration * maxAcceleration)
+            acceleration = normalize(acceleration) * maxAcceleration;
+
+        rb.AddForce(acceleration, ForceMode.Acceleration);
+        return acceleration;
+    }
 }
