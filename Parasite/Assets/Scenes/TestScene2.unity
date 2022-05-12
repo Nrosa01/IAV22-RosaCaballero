@@ -863,9 +863,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81dc874b6deb56348bba1d58a1a3e576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputReader: {fileID: 11400000, guid: 307e1df20ac64a54795ff4d113a9050f, type: 2}
   _skills: {fileID: 11400000, guid: 1b0b64db9abb0d240a9978f8e87a23c2, type: 2}
-  rb: {fileID: 0}
+  _inputReader: {fileID: 11400000, guid: 307e1df20ac64a54795ff4d113a9050f, type: 2}
 --- !u!4 &861985658 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0157e4656fc5a17499c9184c563399d0,

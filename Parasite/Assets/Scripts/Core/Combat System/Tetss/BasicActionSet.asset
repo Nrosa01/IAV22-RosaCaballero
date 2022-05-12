@@ -16,7 +16,7 @@ MonoBehaviour:
   - <DurationInBuffer>k__BackingField: 0.2
     <PostRecheckTime>k__BackingField: 0.1
     actionDuration: 0.3
-    delayToNextAction: 0.25
+    delayToNextAction: 0.15
     spawnableAction: {fileID: 7023637099497667740, guid: d34506ebdbcb86d46a5be4710b13b3dc,
       type: 3}
     data:
@@ -24,7 +24,7 @@ MonoBehaviour:
   - <DurationInBuffer>k__BackingField: 0.2
     <PostRecheckTime>k__BackingField: 0.1
     actionDuration: 0.3
-    delayToNextAction: 0.25
+    delayToNextAction: 0.15
     spawnableAction: {fileID: 7023637099497667740, guid: aca5b470c3b4dce4397e9edd58b00d29,
       type: 3}
     data:
@@ -43,11 +43,11 @@ MonoBehaviour:
     - rid: 3359383229868277760
       type: {class: SlashData, ns: , asm: Assembly-CSharp}
       data:
-        dashForce: 10
+        dashForce: 5
     - rid: 3359383229868277761
       type: {class: SlashData, ns: , asm: Assembly-CSharp}
       data:
-        dashForce: 20
+        dashForce: 5
     - rid: 3359383229868277762
       type: {class: SlashData, ns: , asm: Assembly-CSharp}
       data:

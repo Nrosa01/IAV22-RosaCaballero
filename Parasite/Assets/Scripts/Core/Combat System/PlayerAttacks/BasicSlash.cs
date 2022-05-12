@@ -18,7 +18,7 @@ public class BasicSlash : ICancellableAction
     {
         this.data = (SlashData)data;
         rb = character.characterInfo.rigidBody;
-        rb.AddForce(character.transform.forward * this.data.dashForce, ForceMode.Impulse);
+        rb.AddForce(character.transform.forward * (this.data.dashForce + rb.velocity.magnitude), ForceMode.Impulse);
         Slash(duration, token).Forget();
     }
 
