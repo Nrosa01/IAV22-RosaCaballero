@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 [CreateAssetMenu(fileName = "UnitSkills", menuName = "UnitSkills")]
 public class UnitSkills_SO : ScriptableObject
@@ -9,6 +10,12 @@ public class UnitSkills_SO : ScriptableObject
     [SerializeField] ActionSet_SO movementActions;
     [SerializeField] ActionSet_SO signatureActions;
 
+    public ActionSet_SO MeleeActions { get { return meleeActions; } }
+    public ActionSet_SO RangedActions { get { return rangedActions; } }
+    public ActionSet_SO MovementActions { get { return movementActions; } }
+    public ActionSet_SO SignatureActions { get { return signatureActions; } }
+
+    public static List<CancellableSpawneableAction> ParseAction(ActionSet_SO actionSet) => actionSet != null ? actionSet.GetActions() : new List<CancellableSpawneableAction>();
     public UnitSkills GetNewInstance() => UnitSkills.GetNewInstance(meleeActions, rangedActions, movementActions, signatureActions);
 }
 
@@ -16,6 +23,7 @@ public class UnitSkills_SO : ScriptableObject
 public class UnitSkills
 {
     ActionBuffer buffer = new ActionBuffer();
+    GameObject unit;
 
     [SerializeField] SkillSet<CancellableSpawneableAction> meleeActions;
     [SerializeField] SkillSet<CancellableSpawneableAction> rangedActions;
@@ -24,6 +32,7 @@ public class UnitSkills
 
     public void Init(GameObject self)
     {
+        this.unit = self;
         meleeActions.Init(self);
         rangedActions.Init(self);
         movementActions.Init(self);
@@ -43,11 +52,7 @@ public class UnitSkills
         buffer.Clear();
     }
 
-    public bool IsAnySkillExecuting()
-    {
-        return meleeActions.IsExecuting() || rangedActions.IsExecuting() || movementActions.IsExecuting() || signatureActions.IsExecuting();
-    }
-        
+    public bool IsAnySkillExecuting() => meleeActions.IsExecuting() || rangedActions.IsExecuting() || movementActions.IsExecuting() || signatureActions.IsExecuting();
     public void ExecuteMeleeAction() => TryAddAction(meleeActions.GetCurrentSkill());
     public void ExecuteRangedAction() => TryAddAction(rangedActions.GetCurrentSkill());
 
@@ -72,13 +77,45 @@ public class UnitSkills
         return skills;
     }
 
+    public void ChangeMeleeSkill(ActionSet_SO newMeleeActions)
+    {
+        Assert.IsNotNull(newMeleeActions);
+        meleeActions.CancelCurrentSkill();
+        meleeActions = new SkillSet<CancellableSpawneableAction>(newMeleeActions.GetActions());
+        meleeActions.Init(unit);
+    }
+
+    public void ChangeRangedSkill(ActionSet_SO newRangedActions)
+    {
+        Assert.IsNotNull(newRangedActions);
+        rangedActions.CancelCurrentSkill();
+        rangedActions = new SkillSet<CancellableSpawneableAction>(newRangedActions.GetActions());
+        rangedActions.Init(unit);
+    }
+
+    public void ChangeMovementSkill(ActionSet_SO newMovementActions)
+    {
+        Assert.IsNotNull(newMovementActions);
+        movementActions.CancelCurrentSkill();
+        movementActions = new SkillSet<CancellableSpawneableAction>(newMovementActions.GetActions());
+        movementActions.Init(unit);
+    }
+
+    public void ChangeSignatureSkill(ActionSet_SO newSignatureActions)
+    {
+        Assert.IsNotNull(newSignatureActions);
+        signatureActions.CancelCurrentSkill();
+        signatureActions = new SkillSet<CancellableSpawneableAction>(newSignatureActions.GetActions());
+        signatureActions.Init(unit);
+    }
+
     public static UnitSkills GetNewInstance(ActionSet_SO meleeActions, ActionSet_SO rangedActions, ActionSet_SO movementActions, ActionSet_SO signatureActions)
     {
         UnitSkills skills = new UnitSkills();
-        skills.meleeActions = new SkillSet<CancellableSpawneableAction>(meleeActions != null ? meleeActions.GetActions() : new List<CancellableSpawneableAction>());
-        skills.movementActions = new SkillSet<CancellableSpawneableAction>(movementActions != null ? movementActions.GetActions() : new List<CancellableSpawneableAction>());
-        skills.rangedActions = new SkillSet<CancellableSpawneableAction>(rangedActions != null ? rangedActions.GetActions() : new List<CancellableSpawneableAction>());
-        skills.signatureActions = new SkillSet<CancellableSpawneableAction>(signatureActions != null ? signatureActions.GetActions() : new List<CancellableSpawneableAction>());
+        skills.meleeActions = new SkillSet<CancellableSpawneableAction>(UnitSkills_SO.ParseAction(meleeActions));
+        skills.movementActions = new SkillSet<CancellableSpawneableAction>(UnitSkills_SO.ParseAction(movementActions));
+        skills.rangedActions = new SkillSet<CancellableSpawneableAction>(UnitSkills_SO.ParseAction(rangedActions));
+        skills.signatureActions = new SkillSet<CancellableSpawneableAction>(UnitSkills_SO.ParseAction(signatureActions));
 
         return skills;
     }

@@ -8,7 +8,8 @@ using UnityEngine.InputSystem;
 public class CharacterBase : MonoBehaviour
 {
     [SerializeField] UnitSkills_SO _skills;
-    UnitSkills skills;
+    [SerializeField] protected Health health;
+    protected UnitSkills skills;
     [HideInInspector] public CharacterInfo characterInfo;
 
     protected void AttackMelee() => skills.ExecuteMeleeAction();

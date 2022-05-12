@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class ContinuosInputAction
 {
     Action action;
-    private CancellationTokenSource cancellAttackToken = new CancellationTokenSource();
+    private CancellationTokenSource cancellActionToken = new CancellationTokenSource();
 
     public ContinuosInputAction(Action action)
     {
@@ -19,11 +19,11 @@ public class ContinuosInputAction
     {
         if (phase == InputActionPhase.Performed)
         {
-            cancellAttackToken = new CancellationTokenSource();
-            Perform(cancellAttackToken.Token).Forget();
+            cancellActionToken = new CancellationTokenSource();
+            Perform(cancellActionToken.Token).Forget();
         }
         else if (phase == InputActionPhase.Canceled)
-            cancellAttackToken.Cancel();
+            cancellActionToken.Cancel();
     }
 
     private async UniTaskVoid Perform(CancellationToken cancellation)

@@ -4,6 +4,8 @@ using UnityEngine;
 public class Player : CharacterBase
 {
     [SerializeField] public InputReader _inputReader = default;
+    [SerializeField] UnitSkills_SO alternativeSkills;
+    
     ContinuosInputAction meleeAttackAction;
 
     protected override void Awake()
@@ -17,7 +19,7 @@ public class Player : CharacterBase
         _inputReader.moveEvent += MoveCharacter;
         _inputReader.finishMoveEvent += StopCharacterMovement;
         _inputReader.attackEvent += meleeAttackAction.Callback;
-        _inputReader.dashEvent += MoveSkill;
+        _inputReader.dashEvent += ChangeMelee;
     }
 
     protected void OnDisable()
@@ -25,6 +27,12 @@ public class Player : CharacterBase
         _inputReader.moveEvent -= MoveCharacter;
         _inputReader.finishMoveEvent -= StopCharacterMovement;
         _inputReader.attackEvent -= meleeAttackAction.Callback;
-        _inputReader.dashEvent -= MoveSkill;
+        _inputReader.dashEvent -= ChangeMelee;
+    }
+
+    void ChangeMelee()
+    {
+        Debug.Log("Changing skills");
+        this.skills.ChangeMeleeSkill(alternativeSkills.MeleeActions);
     }
 }
