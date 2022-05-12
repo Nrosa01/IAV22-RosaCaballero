@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
     UnitSkills skills;
 
     [HideInInspector] public Rigidbody rb; //Final movement vector, manipulated by the StateMachine actions
-
     public Vector2 movementInput => _movementInput;
     private Vector2 _movementInput; //Initial input coming from the Protagonist script
 

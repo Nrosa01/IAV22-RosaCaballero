@@ -38,6 +38,10 @@ public class PitchAddonMultitarget : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (enabled && !Application.isPlaying)
+        {
+            multiTarget = GetComponent<CameraMultiTarget>();
+            maxDistance = Vector3.Distance(start.position, end.position);
             UpdatePitch();
+        }
     }
 }
