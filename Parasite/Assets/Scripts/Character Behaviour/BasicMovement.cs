@@ -3,41 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Este script tambien lo usara el enemigo, pero para prototipar mas rapido por ahora esta hecho para el player
-public class BasicMovement : MonoBehaviour
+public class BasicMovement : CharacterComponent
 {
-    Rigidbody rb;
+    Rigidbody rigidBody;
     public float maxSpeed;
     public float acceleration;
     Camera cam;
-    Player p;
-    Vector2 previousMovement = Vector2.zero;
+    Vector2 movementInput;
 
-    private void Awake()
+    protected override void Awake()
     {
-        p = GetComponent<Player>();
-        rb = GetComponent<Rigidbody>();
+        base.Awake();
+        rigidBody = characterInfo.rigidBody;
         cam = Camera.main;
+        character.MoveActionRequested += OnMoveEvent;
     }
 
-    void Update()
+    private void OnDestroy()
     {
-        if (p.movementInput == Vector2.zero) return;
-        
-        previousMovement = p.movementInput;
-
-        float rotation = Mathf.Atan2(previousMovement.x, previousMovement.y);
-
-        // Create a quaternion (rotation) based on the rotation around the Y axis
-        Quaternion q = Quaternion.Euler(0f, rotation * Mathf.Rad2Deg + cam.transform.parent.localEulerAngles.y, 0f);
-
-        // Set the player's rotation to the quaternion
-        rb.rotation = q;
-
+        character.MoveActionRequested -= RotateTowardsDirection;
     }
+
+    void OnMoveEvent(Vector2 movement)
+    {
+        movementInput = movement;
+        RotateTowardsDirection(movement);
+    }
+
+    void RotateTowardsDirection(Vector2 direction)
+    {
+        if (direction == Vector2.zero)
+            return;
+        
+        float rotation = Mathf.Atan2(direction.x, direction.y);
+        rigidBody.rotation = Quaternion.Euler(0f, rotation * Mathf.Rad2Deg + cam.transform.parent.localEulerAngles.y, 0f); ;
+    }
+
     private void FixedUpdate()
     {
-        int canMove = p.movementInput == Vector2.zero ? 0 : 1;
-        if (canMove == 0) return;
-        rb.AccelerateTo(transform.forward * maxSpeed * canMove, acceleration);
+        if (movementInput == Vector2.zero) 
+            return;
+        rigidBody.AccelerateTo(transform.forward * maxSpeed, acceleration);
     }
 }

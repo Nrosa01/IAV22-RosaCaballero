@@ -5,56 +5,24 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Player : CharacterBase
 {
     [SerializeField] public InputReader _inputReader = default;
-    
-    [SerializeField] UnitSkills_SO _skills;
-    UnitSkills skills;
 
-    [HideInInspector] public Rigidbody rb; //Final movement vector, manipulated by the StateMachine actions
-    public Vector2 movementInput => _movementInput;
-    private Vector2 _movementInput; //Initial input coming from the Protagonist script
-
-    private void Awake()
+    protected void OnEnable()
     {
-        if(_skills  == null)
-            throw new Exception("Player: Skills not set");
-        skills = _skills.GetNewInstance();
-        skills.Init(this.gameObject);
-        rb = GetComponent<Rigidbody>();
-    }
-
-    private void OnEnable()
-    {
-        _inputReader.moveEvent += OnMove;
-        _inputReader.finishMoveEvent += OnStop;
+        _inputReader.moveEvent += MoveCharacter;
+        _inputReader.finishMoveEvent += StopCharacterMovement;
         _inputReader.attackEvent += OnAttack;
-        _inputReader.dashEvent += OnMoveAction;
-        AttackRequested += skills.ExecuteMeleeAction;
+        _inputReader.dashEvent += MoveSkill;
     }
 
-    private void OnDisable()
+    protected void OnDisable()
     {
-        _inputReader.moveEvent -= OnMove;
-        _inputReader.finishMoveEvent -= OnStop;
+        _inputReader.moveEvent -= MoveCharacter;
+        _inputReader.finishMoveEvent -= StopCharacterMovement;
         _inputReader.attackEvent -= OnAttack;
-        _inputReader.dashEvent -= OnMoveAction;
-        AttackRequested -= skills.ExecuteMeleeAction;
-
-    }
-
-    private void OnMove(Vector2 movement)
-    {
-        _movementInput = movement;
-    }
-
-    private void OnStop() => _movementInput = Vector2.zero;
-
-    private void OnMoveAction()
-    {
-        skills.CancelCurrentAction();
-        MoveActionRequested?.Invoke();
+        _inputReader.dashEvent -= MoveSkill;
     }
 
     private CancellationTokenSource cancellAttackToken = new CancellationTokenSource();
@@ -73,11 +41,8 @@ public class Player : MonoBehaviour
     {
         while (true)
         {
-            AttackRequested?.Invoke();
+            AttackMelee();
             await UniTask.Yield(cancellation);
         }
     }
-
-    public event Action AttackRequested;
-    public event Action MoveActionRequested;
 }
