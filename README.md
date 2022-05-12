@@ -8,7 +8,9 @@
 - [Descripción del proyecto](#descripción-del-proyecto)
 - [Punto de partida](#punto-de-partida)
 - [Paquetes de Unity añadidos](#paquetes-de-unity-añadidos)
+- [Assets](#assets)
 - [Funcioamiento de la IA](#funcioamiento-de-la-ia)
+  - [Comportamiento de la IA](#comportamiento-de-la-ia)
 - [Pseudocodigo](#pseudocodigo)
 - [Controles](#controles)
 
@@ -44,9 +46,43 @@ Para la realización del proyecto, he importado los siguientes paquetes:
 - RioniUtils
   - Paquete propio que contiene una colección de scripts con métodos de extensión y funciones matemáticas que me ayudan a trabajar con los datos de Unity.
 
+# Assets
+
+La idea es usar el menor número de assets externos. Actualmente todos los assets que hay en el proyecto, incluidos materiales, shaders y texturas son realizados por mi. Como excepción hay un modelo de un Riolu (Pokemon) que estoy usando de forma temporal como personaje, ya que el modelo era compatible con las animaciones de mixamo. Ver las animaciones es un reflejo del estado del personaje, lo cual me ayuda a depurar el funcionamiento del prototipo.
+
+Las texturas usadas (salvo las de Riolu) han sido realizadas bien en material maker (software gratuito de itchio), bien en medibang (programa de dibujo gratuito), bien bakeando en blender una textura procedural o bien pintando sobre la malla en substance painter (usando licencia de estudiante)
+
 # Funcioamiento de la IA
 
 En este apartdo voy a describir el funcioamineto de la IA del enemigo. Este apartado es similar al pseudocodigo que se mostrará en el siguiente, sin embargo en este apartado nos basaremos en el concepto de la IA de forma que cualquier persona pueda entender que es lo que hace, mientras que en el siguiente lo que veremos será un prototipo de posible implementación.
+
+Lo primero que pensé que sería importante antes de modelar el comportamiento de la IA, es definir una serie de características o funciones que ha de cumplir, tras esto, ver que datos podría necesitar para poder realizarlo y por último relacionar estas funciones y datos para modelar el comportamiento.
+
+- Características de la IA
+  - Acercarse al jugador para atacar en caso de que vaya a atacar melee
+  - Alejarse del jugador para evitar daño melee, atacar rango.
+  - Usar habilidad de movimiento para esquivar ataques del jugador anticipándose a estos
+  - Parametros para modificar su comportamiento (agresividad vs cautela)
+  - Adaptarse en medio del combate a los cambios de habilidad del jugador
+  - Bloquear ataques del jugador si es posible*
+  - Usar su habilidad especial (signature) en el momento adecuado.
+  - Adaptarse su patrón de comportamiento a la situación del combate (va ganando es más agresivo, va perdiendo es más cauto, por ejemplo)
+  - La IA estará pensada para enfrentar a un solo enemigo, el jugador no puede invocar minions. En caso de disponer de suficinete tiempo esto podría cambiar.
+  - La IA será consciente de los obstáculos del entorno y los usará para cubrirse (opcional, si hay suficiente tiempo)
+
+* Como los ataques son configurables, puede que un proyectil del jugador se anule con uno del enemigo, la IA no sabrá esto de primeras, tendrá que aprenderlo durante el combate y adaptarse si esto cambia. También puede ser posible que el ataque a melee del enemigo y del jugador se contraarresten, o que el jugador pueda bloquear los proyectiles del enemigo con su ataque melee. La IA debe aprender que puede hacer o no el jugador respecto sus ataques durante el combate, aunque esto no implica que no pueda recibir información privilegiada de un observer*2.
+
+* 2- Es posible que exista un observer, que seria un "segundo jugador" responsable de controlar al enemigo y darle órdenes o información. Esto no será algo definitivo hasta que no lo haya probado. Puede que este concepto funcione bien o puede que no.  
+
+- Datos que va a necesitar la IA
+  - Referencia al jugador
+  - Información del rango de sus ataques (sería absurdo que tenga que aprender como van sus propios ataques)
+  - Información de su hablidad de movimiento (distancia que cubre, duración, si le da invulnerabilidad, etc)
+  - Información de su habilidad signatura (rango, si es de daño o de crowd control, etc)
+
+Una vez tenemos esto definido, podemos modelar la IA.
+
+## Comportamiento de la IA
 
 #  Pseudocodigo
 
