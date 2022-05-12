@@ -12,6 +12,7 @@ public class CameraMultiTarget : MonoBehaviour
     public float PaddingUp;
     public float PaddingDown;
     public float MoveSmoothTime = 0.19f;
+    Vector3 velocity = Vector3.zero;
 
     [SerializeField] private Camera _camera;
     public GameObject[] _targets = new GameObject[0];
@@ -38,14 +39,12 @@ public class CameraMultiTarget : MonoBehaviour
 
     void HandleCamera()
     {
-
         if (_targets.Length == 0)
             return;
 
         var targetPositionAndRotation = TargetPositionAndRotation(_targets);
 
-        Vector3 velocity = Vector3.zero;
-        transform.position = Vector3.SmoothDamp(transform.position, targetPositionAndRotation.Position, ref velocity, MoveSmoothTime);
+        transform.position = Vector3.SmoothDamp(transform.position, targetPositionAndRotation.Position, ref velocity, MoveSmoothTime * Time.deltaTime);
         transform.rotation = targetPositionAndRotation.Rotation;
     }
     
