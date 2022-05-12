@@ -9,6 +9,12 @@ public class ActionSet_SO : ScriptableObject
 
     public List<CancellableSpawneableAction> GetActions() => actions.Select(x => (CancellableSpawneableAction)x.Clone()).ToList();
 
+    private void OnValidate()
+    {
+        foreach (var action in actions)
+            action.OnValidate();
+    }
+
     private void OnEnable()
     {
         if (actions == null)

@@ -11,9 +11,14 @@ public class BasicSlash : ICancellableAction
     [SerializeField] private int _count = 15;
     public GameObject followObject;
     public AnimationCurve curve;
-
-    public override void DoAction(float duration, CancellationToken token)
+    private Rigidbody rb;
+    SlashData data;
+    
+    public override void DoAction(float duration, CharacterBase character, ICancellableActionData data, CancellationToken token)
     {
+        this.data = (SlashData)data;
+        rb = character.characterInfo.rigidBody;
+        rb.AddForce(character.transform.forward * this.data.dashForce, ForceMode.Impulse);
         Slash(duration, token).Forget();
     }
 
@@ -64,4 +69,15 @@ public class BasicSlash : ICancellableAction
             yield return Vector_Extensions.Slerp(start, end, center, i);
         }
     }
+
+    public override ICancellableActionData GetDataType()
+    {
+        return new SlashData();
+    }
+}
+
+[System.Serializable]
+public class SlashData : ICancellableActionData
+{
+    public float dashForce = 10.0f;
 }

@@ -17,17 +17,38 @@ MonoBehaviour:
     <PostRecheckTime>k__BackingField: 0.1
     actionDuration: 0.3
     delayToNextAction: 0.25
-    particles: {fileID: 7023637099497667740, guid: d34506ebdbcb86d46a5be4710b13b3dc,
+    spawnableAction: {fileID: 7023637099497667740, guid: d34506ebdbcb86d46a5be4710b13b3dc,
       type: 3}
+    data:
+      rid: 3359383229868277760
   - <DurationInBuffer>k__BackingField: 0.2
     <PostRecheckTime>k__BackingField: 0.1
     actionDuration: 0.3
     delayToNextAction: 0.25
-    particles: {fileID: 7023637099497667740, guid: aca5b470c3b4dce4397e9edd58b00d29,
+    spawnableAction: {fileID: 7023637099497667740, guid: aca5b470c3b4dce4397e9edd58b00d29,
       type: 3}
+    data:
+      rid: 3359383229868277761
   - <DurationInBuffer>k__BackingField: 0.05
     <PostRecheckTime>k__BackingField: 0.1
     actionDuration: 0.5
     delayToNextAction: 0.25
-    particles: {fileID: 7023637099497667740, guid: d9cce4e92ca46dc4abf3d0a69253c7fd,
+    spawnableAction: {fileID: 7023637099497667740, guid: d9cce4e92ca46dc4abf3d0a69253c7fd,
       type: 3}
+    data:
+      rid: 3359383229868277762
+  references:
+    version: 2
+    RefIds:
+    - rid: 3359383229868277760
+      type: {class: SlashData, ns: , asm: Assembly-CSharp}
+      data:
+        dashForce: 10
+    - rid: 3359383229868277761
+      type: {class: SlashData, ns: , asm: Assembly-CSharp}
+      data:
+        dashForce: 20
+    - rid: 3359383229868277762
+      type: {class: SlashData, ns: , asm: Assembly-CSharp}
+      data:
+        dashForce: 10
