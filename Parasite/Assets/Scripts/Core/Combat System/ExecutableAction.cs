@@ -99,6 +99,7 @@ public abstract class ExecutableAction : IExecutableAction<ExecutableAction>
             cancellationToken.Cancel();
             IsExecuting = false;
             HasCooldown = false;
+            Buffer.Clear(); // Limpiar buffer, si se cancela una acción se interrumpen todas las demás
         }
     }
 

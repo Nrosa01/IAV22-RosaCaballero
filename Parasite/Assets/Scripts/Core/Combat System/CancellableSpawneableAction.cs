@@ -13,7 +13,7 @@ public class CancellableSpawneableAction : ExecutableAction, IValidatable
     {
         //SignalBus<SignalCameraShake>.Fire(new SignalCameraShake(0.2f, 0.1f));
         var go = GameObject.Instantiate(spawnableAction, transform.position, transform.rotation);
-        go.DoAction(actionDuration, character, data, this.cancellationToken.Token);
+        go.DoAction(actionDuration, character, data, this.cancellationToken.Token, this);
         go.transform.SetParent(transform);
     }
 

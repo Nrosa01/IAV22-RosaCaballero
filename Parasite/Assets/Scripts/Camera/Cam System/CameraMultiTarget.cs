@@ -178,7 +178,6 @@ public class CameraMultiTarget : MonoBehaviour
         Debug.DrawRay(rotation * start, rotation * direction, color);
     }
 
-
     private void OnDrawGizmos()
     {
         if (enabled && !Application.isPlaying)

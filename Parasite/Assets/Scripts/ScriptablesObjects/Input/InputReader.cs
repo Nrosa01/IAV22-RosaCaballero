@@ -1,22 +1,27 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+using System;
 
 [CreateAssetMenu(fileName = "InputReader", menuName = "Game/Input Reader")]
 
 public class InputReader : ScriptableObject, GameInput.IGameplayActions
 {
     //Gameplay
-    public event UnityAction<Vector2> moveEvent = delegate { };
-    public event UnityAction<InputActionPhase> attackEvent = delegate { };
-    public event UnityAction finishMoveEvent = delegate { };
-    public event UnityAction dashEvent = delegate { };
-    public event UnityAction pauseEvent = delegate { };
+    public event Action<Vector2> moveEvent;
+    ContinuosInputAction attackAction;
+    public event Action attackEvent;
+    public event Action finishMoveEvent;
+    public event Action dashEvent;
+    public event Action pauseEvent;
 
     private GameInput gameInput;
 
     private void OnEnable()
     {
+        if (attackAction == null)
+            attackAction = new ContinuosInputAction(() => attackEvent?.Invoke());
+        
         if (gameInput == null)
         {
             gameInput = new GameInput();
@@ -32,7 +37,7 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        attackEvent?.Invoke(context.phase);
+        attackAction.Callback(context.phase);
     }
 
     public void OnDash(InputAction.CallbackContext context)

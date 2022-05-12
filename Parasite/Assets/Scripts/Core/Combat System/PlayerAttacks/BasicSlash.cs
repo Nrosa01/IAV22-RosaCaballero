@@ -13,9 +13,11 @@ public class BasicSlash : ICancellableAction
     public AnimationCurve curve;
     private Rigidbody rb;
     SlashData data;
-    
-    public override void DoAction(float duration, CharacterBase character, ICancellableActionData data, CancellationToken token)
+    IExecutableAction action;
+
+    public override void DoAction(float duration, CharacterBase character, ICancellableActionData data, CancellationToken token, IExecutableAction action)
     {
+        this.action = action;
         this.data = (SlashData)data;
         rb = character.characterInfo.rigidBody;
         rb.AddForce(character.transform.forward * (this.data.dashForce + rb.velocity.magnitude), ForceMode.Impulse);
