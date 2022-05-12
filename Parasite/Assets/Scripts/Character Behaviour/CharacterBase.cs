@@ -11,15 +11,14 @@ public class CharacterBase : MonoBehaviour
     UnitSkills skills;
     [HideInInspector] public CharacterInfo characterInfo;
 
-    public void AttackMelee() => skills.ExecuteMeleeAction();
-    public void AttackRanged() => skills.ExecuteRangedAction();
-    public void MoveSkill() => skills.ExecuteMovementAction();
-    public void AttackSignature() => skills.ExecuteSignatureAction();
+    protected void AttackMelee() => skills.ExecuteMeleeAction();
+    protected void AttackRanged() => skills.ExecuteRangedAction();
+    protected void MoveSkill() => skills.ExecuteMovementAction();
+    protected void AttackSignature() => skills.ExecuteSignatureAction();
+    protected void MoveCharacter(Vector2 direction) => characterInfo.movementInput = direction;
+    protected void StopCharacterMovement() => characterInfo.movementInput = Vector2.zero;
 
-    public void MoveCharacter(Vector2 direction) => MoveActionRequested?.Invoke(direction);
-    protected void StopCharacterMovement() => MoveActionRequested?.Invoke(Vector2.zero);
-    
-    public event Action<Vector2> MoveActionRequested;
+    public bool IsExecuting => skills.IsAnySkillExecuting();
 
     protected virtual void Awake()
     {
@@ -30,14 +29,4 @@ public class CharacterBase : MonoBehaviour
         skills = _skills.GetNewInstance();
         skills.Init(this.gameObject);
     }
-}
-
-public class CharacterInfo
-{
-    public CharacterInfo(CharacterBase character)
-    {
-        this.rigidBody = character.GetComponent<Rigidbody>();
-    }
-
-    public Rigidbody rigidBody;
 }

@@ -16,15 +16,11 @@ public class BasicMovement : CharacterComponent
         base.Awake();
         rigidBody = characterInfo.rigidBody;
         cam = Camera.main;
-        character.MoveActionRequested += OnMoveEvent;
     }
 
-    private void OnDestroy()
-    {
-        character.MoveActionRequested -= RotateTowardsDirection;
-    }
-
-    void OnMoveEvent(Vector2 movement)
+    private void Update() => Move(characterInfo.movementInput);
+    
+    void Move(Vector2 movement)
     {
         movementInput = movement;
         RotateTowardsDirection(movement);
@@ -32,16 +28,18 @@ public class BasicMovement : CharacterComponent
 
     void RotateTowardsDirection(Vector2 direction)
     {
-        if (direction == Vector2.zero)
+        if (!ShouldMove)
             return;
         
         float rotation = Mathf.Atan2(direction.x, direction.y);
         rigidBody.rotation = Quaternion.Euler(0f, rotation * Mathf.Rad2Deg + cam.transform.parent.localEulerAngles.y, 0f); ;
     }
 
+    bool ShouldMove => movementInput != Vector2.zero && !character.IsExecuting;
+
     private void FixedUpdate()
     {
-        if (movementInput == Vector2.zero) 
+        if (!ShouldMove) 
             return;
         rigidBody.AccelerateTo(transform.forward * maxSpeed, acceleration);
     }

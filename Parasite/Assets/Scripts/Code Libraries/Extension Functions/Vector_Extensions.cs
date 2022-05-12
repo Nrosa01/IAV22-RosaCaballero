@@ -5,6 +5,9 @@ using System.Runtime.InteropServices;
 
 public static class Vector_Extensions
 {
+    // Returns Vector2.zero if boolean is false
+    public static Vector2 ZeroIfFalse(this Vector2 vectot2, bool boolean) => boolean ? vectot2 : Vector2.zero;
+
     public static Vector2 GetInverted(this Vector2 vector2) => new Vector2(vector2.y, vector2.x);
 
     public static Vector2 Rotated(this Vector2 v, float delta)
