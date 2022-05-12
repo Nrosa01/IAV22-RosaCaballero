@@ -19,8 +19,7 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
 
     private void OnEnable()
     {
-        if (attackAction == null)
-            attackAction = new ContinuosInputAction(() => attackEvent?.Invoke());
+        attackAction = new ContinuosInputAction(() => attackEvent?.Invoke());
         
         if (gameInput == null)
         {
@@ -33,6 +32,7 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
     private void OnDisable()
     {
         DisableAllInput();
+        attackAction?.Dispose();
     }
 
     public void OnAttack(InputAction.CallbackContext context)

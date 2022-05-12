@@ -4,9 +4,13 @@ using System.Threading;
 using UnityEngine;
 
 [System.Serializable]
-public abstract class ExecutableAction : IExecutableAction<ExecutableAction>
+public abstract class ExecutableAction : IExecutableAction<ExecutableAction>, IDisposable
 {
     public ExecutableAction() { }
+    ~ExecutableAction()
+    {
+        cancellationToken.Dispose();
+    }
 
     public ExecutableAction(ExecutableAction actionToCopy)
     {
@@ -38,11 +42,6 @@ public abstract class ExecutableAction : IExecutableAction<ExecutableAction>
 
     public event Action ActionExecuted;
     public event Action ActionCancelled;
-
-    ~ExecutableAction()
-    {
-        cancellationToken.Dispose();
-    }
 
     public CancellationTokenSource cancellationToken = new CancellationTokenSource();
 
@@ -125,4 +124,6 @@ public abstract class ExecutableAction : IExecutableAction<ExecutableAction>
     }
 
     public abstract ExecutableAction Clone();
+
+    public abstract void Dispose();
 }

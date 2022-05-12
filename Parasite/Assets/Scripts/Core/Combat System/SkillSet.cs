@@ -1,10 +1,11 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
 [System.Serializable]
-public class SkillSet<T> where T : ExecutableAction
+public class SkillSet<T> : IDisposable where T : ExecutableAction
 {
     public SkillSet(List<T> newSkills)
     {
@@ -155,5 +156,13 @@ public class SkillSet<T> where T : ExecutableAction
     {
         SkillSet<T> skillset = new SkillSet<T>(_skills);
         return skillset;
+    }
+
+    public void Dispose()
+    {
+        CancelCurrentSkill();
+        
+        foreach (var skill in skills)
+            skill.Dispose();
     }
 }

@@ -80,7 +80,7 @@ public class UnitSkills
     public void ChangeMeleeSkill(ActionSet_SO newMeleeActions)
     {
         Assert.IsNotNull(newMeleeActions);
-        meleeActions.CancelCurrentSkill();
+        meleeActions.Dispose();
         meleeActions = new SkillSet<CancellableSpawneableAction>(newMeleeActions.GetActions());
         meleeActions.Init(unit);
     }
@@ -88,7 +88,7 @@ public class UnitSkills
     public void ChangeRangedSkill(ActionSet_SO newRangedActions)
     {
         Assert.IsNotNull(newRangedActions);
-        rangedActions.CancelCurrentSkill();
+        rangedActions.Dispose();
         rangedActions = new SkillSet<CancellableSpawneableAction>(newRangedActions.GetActions());
         rangedActions.Init(unit);
     }
@@ -96,7 +96,7 @@ public class UnitSkills
     public void ChangeMovementSkill(ActionSet_SO newMovementActions)
     {
         Assert.IsNotNull(newMovementActions);
-        movementActions.CancelCurrentSkill();
+        movementActions.Dispose();
         movementActions = new SkillSet<CancellableSpawneableAction>(newMovementActions.GetActions());
         movementActions.Init(unit);
     }
@@ -104,7 +104,7 @@ public class UnitSkills
     public void ChangeSignatureSkill(ActionSet_SO newSignatureActions)
     {
         Assert.IsNotNull(newSignatureActions);
-        signatureActions.CancelCurrentSkill();
+        signatureActions.Dispose();
         signatureActions = new SkillSet<CancellableSpawneableAction>(newSignatureActions.GetActions());
         signatureActions.Init(unit);
     }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 738667c66dbe82e4989d277fa2501ea3, type: 3}
   m_Name: Alternative
   m_EditorClassIdentifier: 
-  meleeActions: {fileID: 11400000, guid: 6801e3566437e5440a52d0790e3e88bc, type: 2}
+  meleeActions: {fileID: 11400000, guid: 1cd328af7a3f4f6488a146a0c38847ed, type: 2}
   rangedActions: {fileID: 0}
   movementActions: {fileID: 0}
   signatureActions: {fileID: 0}

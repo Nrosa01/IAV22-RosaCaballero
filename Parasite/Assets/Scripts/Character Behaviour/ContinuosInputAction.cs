@@ -1,10 +1,11 @@
 ﻿using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
+using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
-public class ContinuosInputAction
+public class ContinuosInputAction : IDisposable
 {
     Action action;
     bool executing;
@@ -20,18 +21,18 @@ public class ContinuosInputAction
         Perform(cancellActionToken.Token).Forget();
     }
 
-    ~ContinuosInputAction()
-    {
-        cancellActionToken.Cancel();
-        cancellActionToken.Dispose();
-    }
-
     public void Callback(InputActionPhase phase)
     {
         if (phase == InputActionPhase.Performed)
             executing = true;
         else if (phase == InputActionPhase.Canceled)
             executing = false;
+    }
+
+    public void Dispose()
+    {
+        cancellActionToken.Cancel();
+        cancellActionToken.Dispose();
     }
 
     private async UniTaskVoid Perform(CancellationToken cancellation)

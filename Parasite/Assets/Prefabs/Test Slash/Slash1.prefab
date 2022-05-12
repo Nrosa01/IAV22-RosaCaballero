@@ -14556,7 +14556,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5237322608603585121}
-  m_LocalRotation: {x: -0.058475953, y: -0.8299115, z: -0.08860649, w: 0.5477011}
+  m_LocalRotation: {x: -0.05847596, y: -0.8299115, z: -0.08860649, w: 0.54770106}
   m_LocalPosition: {x: 1.873, y: -0.44, z: 0.801}
   m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 1.5200001}
   m_ConstrainProportionsScale: 0
@@ -14625,8 +14625,8 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5237322608603585121}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -14678,12 +14678,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c11c2606ff4b77439fa5d5ec306baee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isReusable: 1
   _start: {fileID: 1265496225570875819}
   _center: {fileID: 7728174995387158600}
   _end: {fileID: 2359641333121902151}
   _count: 15
   followObject: {fileID: 5237322608603585121}
-  lerpDuration: 0.2
   curve:
     serializedVersion: 2
     m_Curve:
@@ -14708,4 +14708,3 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _inputReader: {fileID: 11400000, guid: 307e1df20ac64a54795ff4d113a9050f, type: 2}

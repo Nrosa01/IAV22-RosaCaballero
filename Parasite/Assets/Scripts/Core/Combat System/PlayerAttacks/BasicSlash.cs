@@ -5,7 +5,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class BasicSlash : ICancellableAction
+public class BasicSlash : CancellableAction
 {
     [SerializeField] private Transform _start, _center, _end;
     [SerializeField] private int _count = 15;
@@ -13,17 +13,21 @@ public class BasicSlash : ICancellableAction
     public AnimationCurve curve;
     private Rigidbody rb;
     SlashData data;
-    IExecutableAction action;
 
-    public override void DoAction(float duration, CharacterBase character, ICancellableActionData data, CancellationToken token, IExecutableAction action)
+    public override void DoAction(float duration, CancellationToken token)
     {
-        this.action = action;
-        this.data = (SlashData)data;
-        rb = character.characterInfo.rigidBody;
         rb.AddForce(character.transform.forward * (this.data.dashForce + rb.velocity.magnitude), ForceMode.Impulse);
         Slash(duration, token).Forget();
     }
 
+    public override void  Init(CharacterBase character, ICancellableActionData actionData, IExecutableAction actionHolder)
+    {
+        base.Init(character, actionData, actionHolder);
+        rb = character.characterInfo.rigidBody;
+        followObject.SetActive(false);
+    }
+
+    protected override void SetActionData(ICancellableActionData data) => this.data = (SlashData)data;
     private async UniTaskVoid Slash(float duration, CancellationToken token)
     {
         float time = 0.000001f;
@@ -40,7 +44,7 @@ public class BasicSlash : ICancellableAction
         }
 
         followObject.SetActive(false);
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
     }
 
     void OnDrawGizmos()

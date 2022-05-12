@@ -4,23 +4,42 @@ using UnityEngine;
 [System.Serializable]
 public class CancellableSpawneableAction : ExecutableAction, IValidatable
 {
-    public ICancellableAction spawnableAction;
+    public CancellableAction spawnableAction;
+    private CancellableAction _spawnableAction;
     [SerializeReference] public ICancellableActionData data;
     Transform transform;
     CharacterBase character;
 
+    public override void Dispose()
+    {
+        Debug.Log("Destroying CancellableSpawneableAction");
+
+        if (_spawnableAction != null && spawnableAction.IsReusable)
+            GameObject.Destroy(_spawnableAction.gameObject);
+    }
+
     public override void Execute()
     {
-        //SignalBus<SignalCameraShake>.Fire(new SignalCameraShake(0.2f, 0.1f));
-        var go = GameObject.Instantiate(spawnableAction, transform.position, transform.rotation);
-        go.DoAction(actionDuration, character, data, this.cancellationToken.Token, this);
-        go.transform.SetParent(transform);
+        if (!this.spawnableAction.IsReusable)
+            SpawnNewAction();
+
+        _spawnableAction.DoAction(actionDuration, cancellationToken.Token);
+    }
+
+    private void SpawnNewAction()
+    {
+        _spawnableAction = GameObject.Instantiate(spawnableAction, transform.position, transform.rotation);
+        _spawnableAction.transform.SetParent(transform);
+        _spawnableAction.Init(character, data, this);
     }
 
     public override void Init(GameObject self)
     {
         transform = self.transform;
         character = self.GetComponent<CharacterBase>();
+
+        if (spawnableAction.IsReusable)
+            SpawnNewAction();
     }
 
     public override ExecutableAction Clone()
