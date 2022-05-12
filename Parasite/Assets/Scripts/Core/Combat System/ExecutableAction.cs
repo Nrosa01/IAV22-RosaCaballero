@@ -87,7 +87,6 @@ public abstract class ExecutableAction : IExecutableAction<ExecutableAction>
         int secondToMilliseconds = 1000;
         await UniTask.Delay((int)(actionDuration * secondToMilliseconds), false, PlayerLoopTiming.Update, cancellationToken.Token);
         IsExecuting = false;
-        Debug.Log(delayToNextAction);
         await UniTask.Delay((int)(delayToNextAction * secondToMilliseconds), false, PlayerLoopTiming.Update, cancellationToken.Token);
         HasCooldown = false;
     }

@@ -43,6 +43,11 @@ public class UnitSkills
         buffer.Clear();
     }
 
+    public bool IsAnySkillExecuting()
+    {
+        return meleeActions.IsExecuting() || rangedActions.IsExecuting() || movementActions.IsExecuting() || signatureActions.IsExecuting();
+    }
+        
     public void ExecuteMeleeAction() => TryAddAction(meleeActions.GetCurrentSkill());
     public void ExecuteRangedAction() => TryAddAction(rangedActions.GetCurrentSkill());
 

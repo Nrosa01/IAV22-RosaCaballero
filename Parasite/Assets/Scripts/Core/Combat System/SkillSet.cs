@@ -4,15 +4,8 @@ using System.Threading;
 using UnityEngine;
 
 [System.Serializable]
-public class SkillSet<T>  where T : ExecutableAction
+public class SkillSet<T> where T : ExecutableAction
 {
-    CancellationTokenSource tokenSource;
-    int currentSkill = 0;
-    int lastExecutedSkill = 0;
-
-    [HideInInspector]public List<T> _skills;
-    public List<T> skills => _skills; 
-
     public SkillSet(List<T> newSkills)
     {
         tokenSource = new CancellationTokenSource();
@@ -40,6 +33,23 @@ public class SkillSet<T>  where T : ExecutableAction
         for (int i = 1; i < _skills.Count; i++)
             _skills[i].priorExecutableAction = _skills[i - 1];
     }
+    ~SkillSet()
+    {
+        foreach (var skill in _skills)
+        {
+            skill.ActionExecuted -= ActionExecuted;
+            skill.ActionCancelled -= ActionCancelled;
+        }
+
+        tokenSource.Dispose();
+    }
+
+    CancellationTokenSource tokenSource;
+    int currentSkill = 0;
+    int lastExecutedSkill = 0;
+
+    [HideInInspector] public List<T> _skills;
+    public List<T> skills => _skills;
 
     async UniTaskVoid CooldownToResetSkill(CancellationToken token)
     {
@@ -63,11 +73,18 @@ public class SkillSet<T>  where T : ExecutableAction
         InitActions(self);
     }
 
+    public bool IsExecuting()
+    {
+        if(_skills.Count == 0)
+            return false;
+        return _skills[lastExecutedSkill].IsExecuting;
+    }
+
     void InitListFromHolders(List<T> holders)
     {
         if (_skills == null)
             _skills = new List<T>();
-        
+
         if (holders != null && holders.Count != 0)
         {
             //Copy holder to skill
@@ -84,17 +101,6 @@ public class SkillSet<T>  where T : ExecutableAction
     {
         foreach (var skill in _skills)
             skill.Init(self);
-    }
-
-    ~SkillSet()
-    {
-        foreach (var skill in _skills)
-        {
-            skill.ActionExecuted -= ActionExecuted;
-            skill.ActionCancelled -= ActionCancelled;
-        }
-
-        tokenSource.Dispose();
     }
 
     public void Add(T skill)
@@ -121,7 +127,7 @@ public class SkillSet<T>  where T : ExecutableAction
         CooldownToResetSkill(tokenSource.Token).Forget();
         GetNextSkill();
     }
-    
+
     public void ActionCancelled()
     {
         currentSkill = 0;
