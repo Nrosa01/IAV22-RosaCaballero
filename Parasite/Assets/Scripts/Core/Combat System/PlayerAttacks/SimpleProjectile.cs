@@ -45,9 +45,9 @@ public class SimpleProjectile : CancellableAction, IPoolable
         rb.AccelerateTo(transform.forward * data.speed);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject != character.gameObject)
+        if (other.gameObject != character.gameObject)
             Despawn();
     }
 

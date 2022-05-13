@@ -12,7 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c48f2a9e8b5ea3647be7f51d8ad4b6c3, type: 3}
   m_Name: PlayerRangedSet
   m_EditorClassIdentifier: 
-  actions: []
+  actions:
+  - <DurationInBuffer>k__BackingField: 0.1
+    <PostRecheckTime>k__BackingField: 0
+    actionDuration: 0
+    delayToNextAction: 0.15
+    spawnableAction: {fileID: 3133648675085344654, guid: 1ef6eaa15a187d34b8a231e21edfc6ce,
+      type: 3}
+    data:
+      rid: 3359383251426738176
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 3359383251426738176
+      type: {class: SimpleProjectile/SimpleProjectileData, ns: , asm: Assembly-CSharp}
+      data:
+        speed: 10
+        offset: {x: 0, y: 0.5, z: 1}
