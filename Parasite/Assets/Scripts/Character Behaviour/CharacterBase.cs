@@ -16,7 +16,7 @@ public class CharacterBase : MonoBehaviour
     protected void AttackRanged() => skills.ExecuteRangedAction();
     protected void MoveSkill() => skills.ExecuteMovementAction();
     protected void AttackSignature() => skills.ExecuteSignatureAction();
-    protected void MoveCharacter(Vector2 direction) => characterInfo.movementInput = direction;
+    protected void MoveCharacter(Vector2 direction) => characterInfo.movementInput = characterInfo.lookAtInput = direction;
     protected void StopCharacterMovement() => characterInfo.movementInput = Vector2.zero;
 
     public bool IsExecuting => skills.IsAnySkillExecuting();

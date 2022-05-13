@@ -12,9 +12,9 @@ public class TargetComponent : CharacterComponent
     Camera main;
     Vector3 yOffset = new Vector3(0, 0.05f, 0);
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
         main = Camera.main;
 
         Cursor.lockState = CursorLockMode.Confined;

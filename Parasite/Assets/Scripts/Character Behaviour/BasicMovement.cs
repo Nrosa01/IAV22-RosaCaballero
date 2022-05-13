@@ -9,11 +9,12 @@ public class BasicMovement : CharacterComponent
     public float maxSpeed;
     public float acceleration;
     Camera cam;
-    Vector2 movementInput;
+    Vector2 lastInput;
+    Vector3 moveDir;
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
         rigidBody = characterInfo.rigidBody;
         cam = Camera.main;
     }
@@ -22,25 +23,50 @@ public class BasicMovement : CharacterComponent
     
     void Move(Vector2 movement)
     {
-        movementInput = movement;
+        lastInput = movement;
         RotateTowardsDirection(movement);
     }
 
+    [ContextMenu("Test")]
+    public void Tesst()
+    {
+        Vector2 dirUp = new Vector2(0, 1);
+        Vector2 forward = new Vector2(-1, 0);
+
+        float forwardToAngle = -Mathf.Atan2(forward.x, forward.y);
+        Debug.Log(forwardToAngle);
+
+        Vector2 finalDir = dirUp.Rotated(forwardToAngle);
+        Debug.Log("Initial dir: " + dirUp);
+        Debug.Log("Final Dir: " + finalDir);
+    }
+
+    public Vector3 GetDirRotatedTo(Vector2 dir, Vector2 forward)
+    {
+        float forwardToAngle = -Mathf.Atan2(forward.x, forward.y);
+        Vector2 finalDir = dir.Rotated(forwardToAngle);
+
+        return new Vector3(finalDir.x, 0, finalDir.y);
+    }
+    
     void RotateTowardsDirection(Vector2 direction)
     {
         if (!ShouldMove)
             return;
+
+        Vector3 camForward = cam.transform.parent.forward;
+        Vector2 camForwardWIthoutY = new Vector2(camForward.x, camForward.z);
         
-        float rotation = Mathf.Atan2(direction.x, direction.y);
-        rigidBody.rotation = Quaternion.Euler(0f, rotation * Mathf.Rad2Deg + cam.transform.parent.localEulerAngles.y, 0f); ;
+        moveDir = GetDirRotatedTo(direction, camForwardWIthoutY);
+        moveDir.Normalize();
     }
 
-    bool ShouldMove => movementInput != Vector2.zero && !character.IsExecuting;
+    bool ShouldMove => lastInput != Vector2.zero && !character.IsExecuting;
 
     private void FixedUpdate()
     {
         if (!ShouldMove) 
             return;
-        rigidBody.AccelerateTo(transform.forward * maxSpeed, acceleration);
+        rigidBody.AccelerateTo(moveDir * maxSpeed, acceleration);
     }
 }

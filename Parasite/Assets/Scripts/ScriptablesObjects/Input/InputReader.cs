@@ -14,7 +14,7 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
     ContinuosInputAction attackAction;
     ContinuosInputAction attackRangedAction;
     public event Action attackMeleeEvent;
-    public event Action attackRangeEvent;
+    public event Action<Vector2> attackRangeEvent;
     public event Action finishMoveEvent;
     public event Action dashEvent;
     public event Action pauseEvent;
@@ -23,12 +23,13 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
     private GameInput gameInput;
     private DeviceType currentDeviceType = DeviceType.Mouse;
     InputDevice currentDevice;
+    Vector2 dir;
 
     private void OnEnable()
     {
         attackAction = new ContinuosInputAction(() => attackMeleeEvent?.Invoke());
-        attackRangedAction = new ContinuosInputAction(() => attackRangeEvent?.Invoke());
-
+        attackRangedAction = new ContinuosInputAction(() => attackRangeEvent?.Invoke(dir));
+        
         if (gameInput == null)
         {
             gameInput = new GameInput();
@@ -89,6 +90,9 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
     }
     public void OnAttackRanged(InputAction.CallbackContext context)
     {
+        if (this.currentDeviceType == DeviceType.Gamepad)
+            dir = context.ReadValue<Vector2>();
+
         attackRangedAction.Callback(context.phase);
     }
 
