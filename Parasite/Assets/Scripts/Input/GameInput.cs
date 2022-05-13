@@ -32,7 +32,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""type"": ""Value"",
                     ""id"": ""6b05b538-d6e1-4eb2-a612-05ff14bba0f7"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
@@ -46,13 +46,22 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack"",
+                    ""name"": ""AttackMelee"",
                     ""type"": ""Button"",
                     ""id"": ""8af44bb7-e383-4193-823a-4b8e1230a9ac"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AttackRanged"",
+                    ""type"": ""Value"",
+                    ""id"": ""44a2538d-82c1-4c4f-b22d-80ccba122f92"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""NormalizeVector2"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Pause"",
@@ -347,7 +356,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Attack"",
+                    ""action"": ""AttackMelee"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -358,9 +367,75 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Attack"",
+                    ""action"": ""AttackMelee"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c9cc4b4-29fa-4b7a-872c-581ed2a9026b"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackRanged"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Gamepad Right Stick"",
+                    ""id"": ""2c2aa521-83ec-4f95-b63d-013d80ca218f"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackRanged"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""045aaaa4-3c2b-4763-a6de-cdfd9089bb45"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackRanged"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""7b216e8d-9343-41b0-a6d4-42281e61aae0"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackRanged"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""b455b2d9-ff15-4d66-8ca5-57551f4855ad"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackRanged"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""b08d6961-9d58-498f-9b24-edea5e181c67"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackRanged"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -681,7 +756,8 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_Dash = m_Gameplay.FindAction("Dash", throwIfNotFound: true);
-        m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
+        m_Gameplay_AttackMelee = m_Gameplay.FindAction("AttackMelee", throwIfNotFound: true);
+        m_Gameplay_AttackRanged = m_Gameplay.FindAction("AttackRanged", throwIfNotFound: true);
         m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
@@ -749,7 +825,8 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
     private IGameplayActions m_GameplayActionsCallbackInterface;
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_Dash;
-    private readonly InputAction m_Gameplay_Attack;
+    private readonly InputAction m_Gameplay_AttackMelee;
+    private readonly InputAction m_Gameplay_AttackRanged;
     private readonly InputAction m_Gameplay_Pause;
     public struct GameplayActions
     {
@@ -757,7 +834,8 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         public GameplayActions(@GameInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
         public InputAction @Dash => m_Wrapper.m_Gameplay_Dash;
-        public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
+        public InputAction @AttackMelee => m_Wrapper.m_Gameplay_AttackMelee;
+        public InputAction @AttackRanged => m_Wrapper.m_Gameplay_AttackRanged;
         public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
@@ -774,9 +852,12 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @Dash.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
-                @Attack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttack;
-                @Attack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttack;
-                @Attack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttack;
+                @AttackMelee.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttackMelee;
+                @AttackMelee.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttackMelee;
+                @AttackMelee.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttackMelee;
+                @AttackRanged.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttackRanged;
+                @AttackRanged.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttackRanged;
+                @AttackRanged.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttackRanged;
                 @Pause.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
@@ -790,9 +871,12 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
-                @Attack.started += instance.OnAttack;
-                @Attack.performed += instance.OnAttack;
-                @Attack.canceled += instance.OnAttack;
+                @AttackMelee.started += instance.OnAttackMelee;
+                @AttackMelee.performed += instance.OnAttackMelee;
+                @AttackMelee.canceled += instance.OnAttackMelee;
+                @AttackRanged.started += instance.OnAttackRanged;
+                @AttackRanged.performed += instance.OnAttackRanged;
+                @AttackRanged.canceled += instance.OnAttackRanged;
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
@@ -853,7 +937,8 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
-        void OnAttack(InputAction.CallbackContext context);
+        void OnAttackMelee(InputAction.CallbackContext context);
+        void OnAttackRanged(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
     }
     public interface IMenuActions

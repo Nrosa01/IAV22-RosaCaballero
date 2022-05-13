@@ -21,11 +21,7 @@ public class TargetComponent : CharacterComponent
         Cursor.visible = false;
     }
 
-    private void OnEnable() => RenderPipelineManager.beginCameraRendering += OnPreRenderSRP;
-
-    private void OnDisable() => RenderPipelineManager.beginCameraRendering -= OnPreRenderSRP;
-
-    void OnPreRenderSRP(ScriptableRenderContext context, Camera algo)
+    private void LateUpdate()
     {
         var mousePos = GetMousePosition();
         if (mousePos.success)

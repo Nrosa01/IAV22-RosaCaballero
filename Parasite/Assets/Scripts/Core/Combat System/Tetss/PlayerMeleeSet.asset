@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c48f2a9e8b5ea3647be7f51d8ad4b6c3, type: 3}
-  m_Name: BasicActionSet
+  m_Name: PlayerMeleeSet
   m_EditorClassIdentifier: 
   actions:
   - <DurationInBuffer>k__BackingField: 0.2

@@ -47,7 +47,7 @@ public class SimpleProjectile : CancellableAction, IPoolable
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject != character.gameObject)
+        if (other.gameObject != character.gameObject && !other.gameObject.CompareTag(StaticTags.InvisibleBounds))
             Despawn();
     }
 

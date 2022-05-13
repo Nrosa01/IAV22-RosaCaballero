@@ -9,7 +9,7 @@ public class Player : CharacterBase
     {
         _inputReader.moveEvent += MoveCharacter;
         _inputReader.finishMoveEvent += StopCharacterMovement;
-        _inputReader.attackEvent += AttackMelee;
+        _inputReader.attackMeleeEvent += AttackMelee;
         _inputReader.dashEvent += MoveSkill;
     }
 
@@ -17,7 +17,7 @@ public class Player : CharacterBase
     {
         _inputReader.moveEvent -= MoveCharacter;
         _inputReader.finishMoveEvent -= StopCharacterMovement;
-        _inputReader.attackEvent -= AttackMelee;
+        _inputReader.attackMeleeEvent -= AttackMelee;
         _inputReader.dashEvent -= MoveSkill;
     }
 }

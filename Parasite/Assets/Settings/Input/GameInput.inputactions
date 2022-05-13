@@ -10,7 +10,7 @@
                     "type": "Value",
                     "id": "6b05b538-d6e1-4eb2-a612-05ff14bba0f7",
                     "expectedControlType": "Vector2",
-                    "processors": "",
+                    "processors": "NormalizeVector2",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -24,13 +24,22 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack",
+                    "name": "AttackMelee",
                     "type": "Button",
                     "id": "8af44bb7-e383-4193-823a-4b8e1230a9ac",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "AttackRanged",
+                    "type": "Value",
+                    "id": "44a2538d-82c1-4c4f-b22d-80ccba122f92",
+                    "expectedControlType": "Vector2",
+                    "processors": "NormalizeVector2",
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Pause",
@@ -325,7 +334,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack",
+                    "action": "AttackMelee",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -336,9 +345,75 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack",
+                    "action": "AttackMelee",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9c9cc4b4-29fa-4b7a-872c-581ed2a9026b",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackRanged",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Gamepad Right Stick",
+                    "id": "2c2aa521-83ec-4f95-b63d-013d80ca218f",
+                    "path": "2DVector(mode=2)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackRanged",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "045aaaa4-3c2b-4763-a6de-cdfd9089bb45",
+                    "path": "<Gamepad>/rightStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackRanged",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "7b216e8d-9343-41b0-a6d4-42281e61aae0",
+                    "path": "<Gamepad>/rightStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackRanged",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "b455b2d9-ff15-4d66-8ca5-57551f4855ad",
+                    "path": "<Gamepad>/rightStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackRanged",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "b08d6961-9d58-498f-9b24-edea5e181c67",
+                    "path": "<Gamepad>/rightStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackRanged",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

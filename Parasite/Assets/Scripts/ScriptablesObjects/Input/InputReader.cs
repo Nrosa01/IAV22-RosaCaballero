@@ -10,7 +10,9 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
     //Gameplay
     public event Action<Vector2> moveEvent;
     ContinuosInputAction attackAction;
-    public event Action attackEvent;
+    ContinuosInputAction attackRangedAction;
+    public event Action attackMeleeEvent;
+    public event Action attackRangeEvent;
     public event Action finishMoveEvent;
     public event Action dashEvent;
     public event Action pauseEvent;
@@ -19,8 +21,9 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
 
     private void OnEnable()
     {
-        attackAction = new ContinuosInputAction(() => attackEvent?.Invoke());
-        
+        attackAction = new ContinuosInputAction(() => attackMeleeEvent?.Invoke());
+        attackRangedAction = new ContinuosInputAction(() => attackRangeEvent?.Invoke());
+
         if (gameInput == null)
         {
             gameInput = new GameInput();
@@ -35,9 +38,13 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
         attackAction?.Dispose();
     }
 
-    public void OnAttack(InputAction.CallbackContext context)
+    public void OnAttackMelee(InputAction.CallbackContext context)
     {
         attackAction.Callback(context.phase);
+    }
+    public void OnAttackRanged(InputAction.CallbackContext context)
+    {
+        attackRangedAction.Callback(context.phase);
     }
 
     public void OnDash(InputAction.CallbackContext context)
