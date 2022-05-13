@@ -14,22 +14,19 @@ public class BasicSlash : CancellableAction
     private Rigidbody rb;
     SlashData data;
 
-    public override void DoAction(float duration, CancellationToken token)
-    {
-        rb.AddForce(character.transform.forward * (this.data.dashForce + rb.velocity.magnitude), ForceMode.Impulse);
-        Slash(duration, token).Forget();
-    }
-
     public override void  Init(CharacterBase character, ICancellableActionData actionData, IExecutableAction actionHolder)
     {
         base.Init(character, actionData, actionHolder);
         rb = character.characterInfo.rigidBody;
         followObject.SetActive(false);
+        transform.SetParent(character.transform);
     }
 
     protected override void SetActionData(ICancellableActionData data) => this.data = (SlashData)data;
-    private async UniTaskVoid Slash(float duration, CancellationToken token)
+    protected override async UniTaskVoid Execute(float duration, CancellationToken token)
     {
+        rb.AddForce(character.transform.forward * (this.data.dashForce + rb.velocity.magnitude), ForceMode.Impulse);
+
         float time = 0.000001f;
         followObject.SetActive(true);
         //followObject.GetComponent<MeshRenderer>().enabled = true;

@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
 using UnityEngine;
@@ -14,6 +15,10 @@ public abstract class CancellableAction : MonoBehaviour
 
     public bool IsReusable => isReusable;
 
+    public void DoAction(float duration, CancellationToken token) => Execute(duration, token).Forget();
+
+    protected abstract UniTaskVoid Execute(float duration, CancellationToken token);
+
     public virtual void Init(CharacterBase character, ICancellableActionData actionData, IExecutableAction actionHolder)
     {
         this.action = actionHolder;
@@ -21,7 +26,9 @@ public abstract class CancellableAction : MonoBehaviour
         SetActionData(actionData);
     }
     protected virtual void SetActionData(ICancellableActionData data) { }
-    public abstract void DoAction(float duration, CancellationToken token);
+    
     public abstract ICancellableActionData GetDataType();
+
+    public virtual CancellableAction GetNewActionInstance(Transform transform) => GameObject.Instantiate(this, transform.position, transform.rotation);
 }
 

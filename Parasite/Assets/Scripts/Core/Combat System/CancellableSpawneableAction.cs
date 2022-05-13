@@ -9,7 +9,7 @@ public class CancellableSpawneableAction : ExecutableAction, IValidatable
     [SerializeReference] public ICancellableActionData data;
     Transform transform;
     CharacterBase character;
-
+    
     public override void Dispose()
     {
         Debug.Log("Destroying CancellableSpawneableAction");
@@ -28,8 +28,7 @@ public class CancellableSpawneableAction : ExecutableAction, IValidatable
 
     private void SpawnNewAction()
     {
-        _spawnableAction = GameObject.Instantiate(spawnableAction, transform.position, transform.rotation);
-        _spawnableAction.transform.SetParent(transform);
+        _spawnableAction = spawnableAction.GetNewActionInstance(transform);
         _spawnableAction.Init(character, data, this);
     }
 
