@@ -58,15 +58,6 @@ public class SimpleProjectile : CancellableAction, IPoolable
         public Vector3 offset;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 5);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + data.offset, 0.1f);
-    }
-
     public void Despawn()
     {
         pool.Despawn(this);

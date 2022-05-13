@@ -24,6 +24,7 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
     private DeviceType currentDeviceType = DeviceType.Mouse;
     InputDevice currentDevice;
     Vector2 dir;
+    public InputAction ranged;
 
     private void OnEnable()
     {
@@ -35,6 +36,10 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
             gameInput = new GameInput();
             gameInput.Gameplay.SetCallbacks(this);
         }
+
+        ranged = gameInput.FindAction("AttackRanged");
+
+
         EnableGameplayInput();
         InputSystem.onEvent += OnInputEvent;
     }
@@ -46,7 +51,7 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
             DeviceType deviceType = GetDeviceType(device);
 
             if (HasChangedDevice(deviceType))
-                deviceChangedEvent?.Invoke(currentDeviceType);
+                deviceChangedEvent?.Invoke(deviceType);
 
             currentDeviceType = deviceType;
             this.currentDevice = device;

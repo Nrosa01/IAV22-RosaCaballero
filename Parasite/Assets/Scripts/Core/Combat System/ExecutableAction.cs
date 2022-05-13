@@ -65,7 +65,7 @@ public abstract class ExecutableAction : IExecutableAction<ExecutableAction>, ID
                 // There might be another of the same type in the buffer waiting, so we force it to stop
                 GenericExtensions.CancelAndGenerateNew(ref cancellationToken);
                 Execute();
-                IsExecuting = true;
+                IsExecuting = actionDuration > 0; //If the action duration is 0, it means it is a one shot action
                 HasCooldown = true;
                 ActionExecuted?.Invoke();
                 Buffer.Remove(this);

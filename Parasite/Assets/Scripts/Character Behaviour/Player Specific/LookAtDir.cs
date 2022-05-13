@@ -18,7 +18,7 @@ public class LookAtDir : CharacterComponent
 
     private void Update() => RotateTo(characterInfo.lookAtInput);
 
-    void RotateTo(Vector2 direction)
+    public void RotateTo(Vector2 direction)
     {
         directionInput = direction;
         RotateTowardsDirection(direction);

@@ -11,6 +11,16 @@ public class TargetComponent : CharacterComponent
     public float radius = 2f;
     Camera main;
     Vector3 yOffset = new Vector3(0, 0.05f, 0);
+    MeshRenderer renderer;
+
+    public Vector2 GetDir()
+    {
+        Vector3 dir = Vector2.zero;
+        if (target != null)
+            dir = target.position - transform.position;
+        
+        return new Vector2(dir.x, dir.z);
+    }
 
     protected override void Start()
     {
@@ -19,7 +29,11 @@ public class TargetComponent : CharacterComponent
 
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
+
+        renderer = target.GetComponent<MeshRenderer>();
     }
+
+    public void SetVisibility(bool visible) => renderer.enabled = visible;
 
     private void LateUpdate()
     {
