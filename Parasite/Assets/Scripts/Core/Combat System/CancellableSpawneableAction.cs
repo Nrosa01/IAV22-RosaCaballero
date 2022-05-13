@@ -9,7 +9,7 @@ public class CancellableSpawneableAction : ExecutableAction, IValidatable
     [SerializeReference] public ICancellableActionData data;
     Transform transform;
     CharacterBase character;
-    
+
     public override void Dispose()
     {
         Debug.Log("Destroying CancellableSpawneableAction");
@@ -61,7 +61,15 @@ public class CancellableSpawneableAction : ExecutableAction, IValidatable
 
     public void OnValidate()
     {
-        if (data == null && spawnableAction != null)
-            data = spawnableAction.GetDataType();
+        if (spawnableAction != null)
+        {
+            ICancellableActionData newData = spawnableAction.GetDataType();
+            if (data == null)
+                data = newData;
+            else if (data.GetType() != newData.GetType())
+                data = newData;
+
+        }
+
     }
 }

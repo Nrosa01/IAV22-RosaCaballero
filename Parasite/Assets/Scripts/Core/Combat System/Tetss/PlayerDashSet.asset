@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c48f2a9e8b5ea3647be7f51d8ad4b6c3, type: 3}
+  m_Name: PlayerDashSet
+  m_EditorClassIdentifier: 
+  actions:
+  - <DurationInBuffer>k__BackingField: 0.1
+    <PostRecheckTime>k__BackingField: 0
+    actionDuration: 0
+    delayToNextAction: 0.15
+    spawnableAction: {fileID: 5543460377343452755, guid: 55ce71dbe33ad9c49bbe8b20b6ba7e66,
+      type: 3}
+    data:
+      rid: 3359383270151946245
+  references:
+    version: 2
+    RefIds:
+    - rid: 3359383270151946245
+      type: {class: DashData, ns: , asm: Assembly-CSharp}
+      data:
+        dashForce: 50

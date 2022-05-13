@@ -12,7 +12,7 @@ public class BasicSlash : CancellableAction
     public GameObject followObject;
     public AnimationCurve curve;
     private Rigidbody rb;
-    SlashData data;
+    DashData data;
 
     public override void  Init(CharacterBase character, ICancellableActionData actionData, IExecutableAction actionHolder)
     {
@@ -22,7 +22,7 @@ public class BasicSlash : CancellableAction
         transform.SetParent(character.transform);
     }
 
-    protected override void SetActionData(ICancellableActionData data) => this.data = (SlashData)data;
+    protected override void SetActionData(ICancellableActionData data) => this.data = (DashData)data;
     protected override async UniTaskVoid Execute(float duration, CancellationToken token)
     {
         rb.AddForce(character.transform.forward * (this.data.dashForce + rb.velocity.magnitude), ForceMode.Impulse);
@@ -75,12 +75,12 @@ public class BasicSlash : CancellableAction
 
     public override ICancellableActionData GetDataType()
     {
-        return new SlashData();
+        return new DashData();
     }
 }
 
 [System.Serializable]
-public class SlashData : ICancellableActionData
+public class DashData : ICancellableActionData
 {
     public float dashForce = 10.0f;
 }

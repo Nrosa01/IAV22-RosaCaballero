@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meleeActions: {fileID: 11400000, guid: 6801e3566437e5440a52d0790e3e88bc, type: 2}
   rangedActions: {fileID: 11400000, guid: 8c8c56698f656f34aaf7a99539332f96, type: 2}
-  movementActions: {fileID: 0}
+  movementActions: {fileID: 11400000, guid: 2c349779e5641044b8909c238e3e015b, type: 2}
   signatureActions: {fileID: 0}
