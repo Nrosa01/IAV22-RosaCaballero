@@ -11,6 +11,10 @@
 - [Assets](#assets)
 - [Funcioamiento de la IA](#funcioamiento-de-la-ia)
   - [Comportamiento de la IA](#comportamiento-de-la-ia)
+  - [Funcionamiento de módulos](#funcionamiento-de-módulos)
+    - [Prioridad de módulo](#prioridad-de-módulo)
+    - [Tasa de éxito](#tasa-de-éxito)
+    - [Posición óptima](#posición-óptima)
 - [Pseudocodigo](#pseudocodigo)
 - [Controles](#controles)
 
@@ -83,6 +87,63 @@ Lo primero que pensé que sería importante antes de modelar el comportamiento d
 Una vez tenemos esto definido, podemos modelar la IA.
 
 ## Comportamiento de la IA
+
+Aquí explico como funciona el sistema de IA.
+
+El concepto es simple. Existe un script CharacterBase que contiene un conjunto de scripts para atacar, moverse, etc. El jugador también usa este script y llama a las distintas acciones en función del input que le pasa el usuario. La IA hará algo similar, extenderá el script CharacterBase y dará órdenes al enemigo en función de unos módulos de IA.
+
+Existe un módulo de IA para cada tipo de acción: Movimiento, AtaqueMelee, AtaqueRanged, etc.
+
+Estos módulos implementan ciertas interfaces que permiten a la IA principal obtener datos y tomar decisiones.
+
+Voy a comenzar describiendo el módulo de IA principal. AICharacterController.cs (el pseudocodigo está en el siguiente apartado que es más técnico).
+
+Este sistema se basa en toma de decisiones ininterrumpibles, una vez se ejecuta una acción esta debe terminar antes de ejecutar otra. Cada cierto tiempo (es decir, no se hace en todos los fotogramas), AICharacterController recibe una serie de datos:
+  - Prioridad de cada módulo (prioridad de ataqueMelee, prioridad de ataqueRanged...)
+  - Tasa de éxito si se ejecuta cada módulo (excepto el movimiento, que se gestiona a parte)
+  - Posición óptima por módulo (Posición óptima de ataqueMelee, Posición óptima de ataqueRanged...)
+Además de esos datos que recibe de los módulos, gestiona otros propios
+  - El tiempo que ha pasado desde que se realizó el último ataque.
+  - "Vida" actual
+  - Proyectiles cercanos (a partir de un subcomponente*)
+  - Configuración de IA (agresividad, cautela, etc)
+
+*Un componente especial sensorial permite a la IA detectar proyectiles y en general obstáculos que puedan hacer daño en contacto.
+
+A continuación voy a describir las distintas configuraciones de IA que puede tener el enemigo. Estas configuraciones afectan a los datos obtenidos, antes de tomar una decisión, estos datos son procesados por el módulo de IA. La toma de decisiones final es independiente de la configuración.
+
+- Proximidad
+  - Se añade más prioridad a las acciones que implican acercarse al jugador, incita ataques a melee.
+- Cautela
+  - Lo contrario a proximidad, incita ataques de rango, pero no a ataques de melee
+- Equilibrado
+  - No modifica ninguna prioridad, no incita ataques de melee ni de rango
+- Agresividad
+  - Prioridad para acciones que realizen daño, ya sean melee, ranged o de movimiento (si por ejemplo un dash lanza proyectiles también es afectada por este modo).
+- Defensivo
+  - Similar a cautela, lo que realmente hace es favorecer la acción cuya posición destino implique menos obstáculos del jugador.
+
+La arquitectura del proyecto está diseñada para soportar esta opciones, por cuestiones técnicas y de tiempo de desarrollo se priorizará la funcionalidad correcta del modo equilibrado sobre las demás.
+
+En cada IAStep (tiempo de actuación de IA) se obtienen los módulos y se ejecuta el primer módulo que tenga una tasa de éxito superior a 0.5 que tenga más prioridad. Si ningún módulo cumple esto se ejecuta el más prioritario.
+
+## Funcionamiento de módulos
+
+La IA de este proyecto es especial porque se adapta a los cambios en las habilidades del jugador. Esta adaptación es a nivel de módulo, cada módulo debe analizar los datos que le interesen del jugador para tomar una decisión. Además todos los módulos tienen acceso al componente de sensorial de la IA.
+
+### Prioridad de módulo
+
+Literalmente es una función que devuelve un número entre 0 y 1 en función de como de prioritario considera el módulo que es ejecutarse.
+
+### Tasa de éxito
+
+Está relacionado con lo anterior. Devuelve la tasa de éxito de ejecución del módulo, en el caso del ataque melee, esto es, la probabilidad de que el player no pueda evadir el ataque. La tasa de éxito también es un número entre 0 y 1, es proporcional a como de cerca se está de la posición óptima.
+
+Un ejemplo para distinguirlo de la prioridad. Imagina que estamos muy cerca del player y está en rango de nuestro ataque pero hay un proyectil suyo delante nuestra. La tasa de éxito es casi de 1, pero la prioridad puede ser baja si el módulo de ataque que usamos considera que recibir daño disminuye la prioridad. Esto es a nivel de módulo y no a nivel de configuración de IA.
+
+### Posición óptima
+
+Devuelve la posición más óptima que aumente la tasa de acierto independientemente de la prioridad. Esto es lo esperado el módulo pero también podría devolver una posición que trate de mantener la prioridad sin ser afectada por la tasa de éxito. Este dato no es relevante para la toma de decisiones, puede ser considerado un componente estrátegico, también puede que un módulo implemente una función de posición óptima pensada para funcionar con ciertos módulos específicos.
 
 #  Pseudocodigo
 
