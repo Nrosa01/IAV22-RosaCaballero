@@ -44,6 +44,7 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
         InputSystem.onEvent += OnInputEvent;
     }
 
+    
     private void OnInputEvent(InputEventPtr args, InputDevice device)
     {
         if (this.currentDevice != device)
