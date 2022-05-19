@@ -13,8 +13,7 @@ public enum AIBehaviour
     Defensivo
 }
 
-
-
+[RequireComponent(typeof(AISensor))]
 public class AICharacterController : CharacterBase
 {
     [SerializeField] ModulesSO _modules;
@@ -24,10 +23,12 @@ public class AICharacterController : CharacterBase
     public float thinkTime = 0.5f;
     bool isAlive = true;
     public AIBehaviour aIBehaviour;
+    ModuleType currentModule;
 
     protected override void Awake()
     {
         base.Awake();
+        sensor = GetComponent<AISensor>();
         internalModules = _modules.GetModuleSystem(sensor);
         Act().Forget();
     }
@@ -42,7 +43,7 @@ public class AICharacterController : CharacterBase
             ModuleStats signatureStat = GetModuleStats(ModuleType.Signature, aIBehaviour);
 
             ModuleType nextAction = GetNextActoni(attackStat, rangedStat, movementStat, signatureStat);
-            ExecuteAction(nextAction);
+            ExecuteAction(nextAction, GetModuleStats(nextAction, aIBehaviour));
 
             await UniTask.Delay((int)(thinkTime * 1000), false, default, default);
         }
@@ -63,6 +64,24 @@ public class AICharacterController : CharacterBase
                 return internalModules.signatureModule.GetStats();
             default:
                 return internalModules.attackModule.GetStats(); ;
+        }
+    }
+
+    Vector3 GetModulePos(ModuleType moduleType, AIBehaviour aiBehaviour)
+    {
+        // En funcion del behaviour modifica o no los stats base que devuelven los modulos
+        switch (moduleType)
+        {
+            case ModuleType.Melee:
+                return internalModules.attackModule.GetOptimalPosition();
+            case ModuleType.Ranged:
+                return internalModules.attackRangedModule.GetOptimalPosition();
+            case ModuleType.Movement:
+                return internalModules.movemenetModule.GetOptimalPosition();
+            case ModuleType.Signature:
+                return internalModules.signatureModule.GetOptimalPosition();
+            default:
+                return internalModules.attackModule.GetOptimalPosition(); ;
         }
     }
 
@@ -87,9 +106,28 @@ public class AICharacterController : CharacterBase
             return fileterdByPriority[0].type;
         }
     }
-    
-    void ExecuteAction(ModuleType type)
+
+    private void Update()
     {
+        Vector3 dest = (GetModulePos(currentModule, aIBehaviour) - transform.position).normalized;
+        Vector2 destWithoutY = new Vector2(dest.x, dest.z);
+        characterInfo.movementInput = destWithoutY;
+        characterInfo.lookAtInput = destWithoutY;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (this.sensor = null) return;
+        Vector3 dest = (GetModulePos(currentModule, aIBehaviour) - transform.position).normalized;
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawLine(transform.position, transform.position + dest * 5);
+    }
+
+    void ExecuteAction(ModuleType type, ModuleStats stats)
+    {
+        currentModule = type;
+        
         switch (type)
         {
             case ModuleType.Melee:

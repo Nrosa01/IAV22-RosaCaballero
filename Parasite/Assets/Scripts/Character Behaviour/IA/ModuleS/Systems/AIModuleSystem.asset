@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9350ada89e0c65b4aa548f1b76063b25, type: 3}
   m_Name: AIModuleSystem
   m_EditorClassIdentifier: 
-  attackModule: {fileID: 0}
-  attackRangedModule: {fileID: 0}
-  movemenetModule: {fileID: 0}
-  signatureModule: {fileID: 0}
+  attackModule: {fileID: 11400000, guid: 947760327baa1a14f9a2b025b30effe4, type: 2}
+  attackRangedModule: {fileID: 11400000, guid: 947760327baa1a14f9a2b025b30effe4, type: 2}
+  movemenetModule: {fileID: 11400000, guid: 947760327baa1a14f9a2b025b30effe4, type: 2}
+  signatureModule: {fileID: 11400000, guid: 947760327baa1a14f9a2b025b30effe4, type: 2}

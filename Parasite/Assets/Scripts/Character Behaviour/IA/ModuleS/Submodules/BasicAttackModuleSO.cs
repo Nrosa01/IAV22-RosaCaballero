@@ -17,16 +17,27 @@ public class BasicAttackModule : Module
 
     public override ModuleStats GetStats()
     {
-        throw new System.NotImplementedException();
+        return new ModuleStats
+        {
+            successRate = GetSuccessRate(),
+            priority = GetPriority(),
+            optimalPos = GetOptimalPosition(),
+            type = ModuleType.Melee
+        };
     }
 
-    protected override float GetPriority()
+    public override Vector3 GetOptimalPosition()
     {
-        throw new System.NotImplementedException();
+        return this.aISensor.GetTarget().position;
     }
 
-    protected override float GetSuccessRate()
+    public override float GetPriority()
     {
-        throw new System.NotImplementedException();
+        return 1;
+    }
+
+    public override float GetSuccessRate()
+    {
+        return 1;
     }
 }

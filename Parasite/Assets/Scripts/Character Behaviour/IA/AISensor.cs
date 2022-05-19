@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class AISensor : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] Transform target;
+
+    public Transform GetTarget() => target;
+
     void Start()
     {
         

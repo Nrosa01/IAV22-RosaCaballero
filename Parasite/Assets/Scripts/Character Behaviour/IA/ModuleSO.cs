@@ -21,15 +21,18 @@ public abstract class Module
     public void SetSensor(AISensor sensor) => this.aISensor = sensor;
     public abstract ModuleStats GetStats();
 
-    protected abstract float GetSuccessRate();
+    public abstract float GetSuccessRate();
 
-    protected abstract float GetPriority();
+    public abstract float GetPriority();
+
+    public abstract Vector3 GetOptimalPosition();
 }
 
 public struct ModuleStats
 {
     public float successRate;
     public float priority;
+    public Vector3 optimalPos;
     public ModuleType type;
 }
 
