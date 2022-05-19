@@ -155,6 +155,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 861985658}
+  checkTime: 0.1
+  projectilesMask:
+    serializedVersion: 2
+    m_Bits: 64
+  projectileDetectionRadius: 4
 --- !u!114 &29519873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,7 +180,7 @@ MonoBehaviour:
     currentHealth: 0
   _modules: {fileID: 11400000, guid: 799bac1fd4bdd9b4dbb32e35322057e7, type: 2}
   timeSinceLastAction: 0
-  thinkTime: 0.5
+  thinkTime: 0.1
   aIBehaviour: 2
 --- !u!114 &29519874
 MonoBehaviour:
@@ -645,6 +650,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  checkTime: 0.5
+  projectilesMask:
+    serializedVersion: 2
+    m_Bits: 0
+  projectileDetectionRadius: 0
 --- !u!1 &400446565
 GameObject:
   m_ObjectHideFlags: 0

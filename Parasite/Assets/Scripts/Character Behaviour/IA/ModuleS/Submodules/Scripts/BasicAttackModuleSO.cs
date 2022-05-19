@@ -28,7 +28,7 @@ public class BasicAttackModule : Module
 
     public override Vector3 GetOptimalPosition()
     {
-        return aISensor.transform.position;
+        //return aISensor.transform.position;
         return this.aISensor.GetTarget().position;
     }
 
@@ -39,6 +39,11 @@ public class BasicAttackModule : Module
     
     public override float GetSuccessRate()
     {
-        return 0.4f;
+        return 0.8f;
+    }
+
+    public override Vector3 GetLookAtPosition()
+    {
+        return GetOptimalPosition();
     }
 }

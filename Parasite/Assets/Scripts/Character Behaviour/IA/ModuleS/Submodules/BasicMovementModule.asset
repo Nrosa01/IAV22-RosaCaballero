@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edfb91a60497cf643821482d29210a5a, type: 3}
   m_Name: BasicMovementModule
   m_EditorClassIdentifier: 
+  maxRepetitions: 1
+  secondsToReset: 1

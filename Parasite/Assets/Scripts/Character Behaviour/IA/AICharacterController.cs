@@ -49,6 +49,27 @@ public class AICharacterController : CharacterBase
         }
     }
 
+    void ExecuteModule(ModuleType moduleType)
+    {
+        switch (moduleType)
+        {
+            case ModuleType.Melee:
+                internalModules.attackModule.OnExecuted();
+                break;
+            case ModuleType.Ranged:
+                internalModules.attackRangedModule.OnExecuted();
+                break;
+            case ModuleType.Movement:
+                internalModules.movemenetModule.OnExecuted();
+                break;
+            case ModuleType.Signature:
+                internalModules.signatureModule.OnExecuted();
+                break;
+            default:
+                break;
+        }
+    }
+
     ModuleStats GetModuleStats(ModuleType moduleType, AIBehaviour aiBehaviour)
     {
         // En funcion del behaviour modifica o no los stats base que devuelven los modulos
@@ -85,6 +106,25 @@ public class AICharacterController : CharacterBase
         }
     }
 
+    Vector3 GetModuleLookAt(ModuleType moduleType, AIBehaviour aiBehaviour)
+    {
+        // En funcion del behaviour modifica o no los stats base que devuelven los modulos
+        switch (moduleType)
+        {
+            case ModuleType.Melee:
+                return internalModules.attackModule.GetLookAtPosition();
+            case ModuleType.Ranged:
+                return internalModules.attackRangedModule.GetLookAtPosition();
+            case ModuleType.Movement:
+                return internalModules.movemenetModule.GetLookAtPosition();
+            case ModuleType.Signature:
+                return internalModules.signatureModule.GetLookAtPosition();
+            default:
+                return internalModules.attackModule.GetLookAtPosition(); ;
+        }
+    }
+
+
     ModuleType GetNextActoni(ModuleStats attackMeleeStats, ModuleStats attackRangedStats, ModuleStats movementStats, ModuleStats signatureStats)
     {
         List<ModuleStats> stats = new List<ModuleStats>();
@@ -117,7 +157,10 @@ public class AICharacterController : CharacterBase
         Vector3 dest = (GetModulePos(currentModule, aIBehaviour) - transform.position).normalized;
         Vector2 destWithoutY = new Vector2(dest.x, dest.z);
         characterInfo.movementInput = destWithoutY;
-        characterInfo.lookAtInput = destWithoutY;
+
+        Vector3 dir = (GetModuleLookAt(currentModule, aIBehaviour) - transform.position).normalized;
+        Vector2 dirWithoutY = new Vector2(dir.x, dir.z);
+        characterInfo.lookAtInput = dirWithoutY;
     }
 
     private void OnDrawGizmos()
@@ -129,28 +172,59 @@ public class AICharacterController : CharacterBase
         Gizmos.DrawLine(transform.position, transform.position + dest * 5);
     }
 
+    bool ShouldExecuteSkill(ModuleType type)
+    {
+        bool shouldExecute = false;
+
+        switch (type)
+        {
+            case ModuleType.Melee:
+                shouldExecute =!internalModules.attackModule.ShouldExecute;
+                break;
+            case ModuleType.Ranged:
+                shouldExecute = !internalModules.attackRangedModule.ShouldExecute;
+                break;
+            case ModuleType.Movement:
+                shouldExecute = !internalModules.movemenetModule.ShouldExecute;
+                break;
+            case ModuleType.Signature:
+                shouldExecute = !internalModules.signatureModule.ShouldExecute;
+                break;
+            default:
+                return false;
+        }
+
+        return shouldExecute && !IsExecuting;
+    }
+
     void ExecuteAction(ModuleType type, ModuleStats stats)
     {
         currentModule = type;
         UpdateDestAndLook();
 
+        ExecuteModule(type);
+
         switch (type)
         {
             case ModuleType.Melee:
-                Debug.Log("Attack Melee");
-                AttackMelee();
+                //Debug.Log("Attack Melee");
+                if (ShouldExecuteSkill(ModuleType.Melee))
+                    AttackMelee();
                 break;
             case ModuleType.Ranged:
-                Debug.Log("Attack Ranged");
-                AttackRanged();
+                //Debug.Log("Attack Ranged");
+                if (ShouldExecuteSkill(ModuleType.Ranged))
+                    AttackRanged();
                 break;
             case ModuleType.Movement:
                 //Debug.Log("Movement");
-                MoveSkill();
+                if (ShouldExecuteSkill(ModuleType.Movement))
+                    MoveSkill();
                 break;
             case ModuleType.Signature:
-                Debug.Log("Signature");
-                AttackSignature();
+                //Debug.Log("Signature");
+                if (ShouldExecuteSkill(ModuleType.Signature))
+                    AttackSignature();
                 break;
             default:
                 break;

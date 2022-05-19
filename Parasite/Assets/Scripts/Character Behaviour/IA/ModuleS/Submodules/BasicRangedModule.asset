@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f51eee8d175b3b6499f64f39087b2df1, type: 3}
   m_Name: BasicRangedModule
   m_EditorClassIdentifier: 
+  maxRepetitions: 5
+  secondsToReset: 3
+  distanceToKeepFromTarget: 4

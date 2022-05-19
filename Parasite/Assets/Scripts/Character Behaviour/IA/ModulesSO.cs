@@ -10,7 +10,7 @@ public class ModulesSO : ScriptableObject
     [SerializeField] ModuleSO movemenetModule;
     [SerializeField] ModuleSO signatureModule;
 
-    public ModuleSystem GetModuleSystem(AISensor sensor) => new ModuleSystem(attackModule.GetModule(sensor), attackRangedModule.GetModule(sensor), movemenetModule.GetModule(sensor), signatureModule.GetModule(sensor));
+    public ModuleSystem GetModuleSystem(AISensor sensor) => new ModuleSystem(attackModule.GetModule2(sensor), attackRangedModule.GetModule2(sensor), movemenetModule.GetModule2(sensor), signatureModule.GetModule2(sensor));
 }
 
 public class ModuleSystem

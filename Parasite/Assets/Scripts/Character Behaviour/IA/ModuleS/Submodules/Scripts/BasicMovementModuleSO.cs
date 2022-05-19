@@ -51,4 +51,9 @@ public class BasicMovementModule : Module
     {
         return 1;
     }
+
+    public override Vector3 GetLookAtPosition()
+    {
+        return GetOptimalPosition();
+    }    
 }

@@ -34,11 +34,16 @@ public class BasicSignatureModule : Module
 
     public override float GetPriority()
     {
-        return 0.5f;
+        return 0.3f;
     }
 
     public override float GetSuccessRate()
     {
         return 1;
+    }
+
+    public override Vector3 GetLookAtPosition()
+    {
+        return GetOptimalPosition();
     }
 }

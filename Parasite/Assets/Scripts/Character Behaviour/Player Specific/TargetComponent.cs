@@ -11,7 +11,7 @@ public class TargetComponent : CharacterComponent
     public float radius = 2f;
     Camera main;
     Vector3 yOffset = new Vector3(0, 0.05f, 0);
-    MeshRenderer renderer;
+    MeshRenderer rnd;
 
     public Vector2 GetDir()
     {
@@ -30,10 +30,10 @@ public class TargetComponent : CharacterComponent
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
 
-        renderer = target.GetComponent<MeshRenderer>();
+        rnd = target.GetComponent<MeshRenderer>();
     }
 
-    public void SetVisibility(bool visible) => renderer.enabled = visible;
+    public void SetVisibility(bool visible) => rnd.enabled = visible;
 
     private void LateUpdate()
     {
