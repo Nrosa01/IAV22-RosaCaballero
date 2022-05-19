@@ -13,6 +13,7 @@ public abstract class CancellableAction : MonoBehaviour
     protected IExecutableAction action;
     protected CharacterBase character;
 
+    public Transform owner => character.transform;
     public bool IsReusable => isReusable;
 
     public void DoAction(float duration, CancellationToken token) => Execute(duration, token).Forget();

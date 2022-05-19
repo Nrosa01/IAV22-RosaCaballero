@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI/Modules/BasicAttackModule", fileName = "BasicAttackModule")]
-public class BasicAttackModuleSO : ModuleSO
+[CreateAssetMenu(menuName = "AI/Modules/BasicSignatureModule", fileName = "BasicSignatureModule")]
+public class BasicSignatureModuleSO: ModuleSO
 {
-    public override Module GetModule(AISensor sensor) => new BasicAttackModule(sensor);
+    public override Module GetModule(AISensor sensor) => new BasicSignatureModule(sensor);
 }
-public class BasicAttackModule : Module
+public class BasicSignatureModule : Module
 {
-    public BasicAttackModule(AISensor sensor) : base(sensor)
+    public BasicSignatureModule(AISensor sensor) : base(sensor)
     {
-        Debug.Log("BasicAttackModule");
+        Debug.Log("BasicSignatureModule");
     }
 
     public override ModuleStats GetStats()
@@ -22,18 +22,19 @@ public class BasicAttackModule : Module
             successRate = GetSuccessRate(),
             priority = GetPriority(),
             optimalPos = GetOptimalPosition(),
-            type = ModuleType.Melee
+            type = ModuleType.Signature
         };
     }
 
     public override Vector3 GetOptimalPosition()
     {
+        return aISensor.transform.position;
         return this.aISensor.GetTarget().position;
     }
 
     public override float GetPriority()
     {
-        return 1;
+        return 0.5f;
     }
 
     public override float GetSuccessRate()

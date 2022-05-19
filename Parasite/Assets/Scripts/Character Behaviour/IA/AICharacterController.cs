@@ -109,6 +109,11 @@ public class AICharacterController : CharacterBase
 
     private void Update()
     {
+        UpdateDestAndLook();
+    }
+
+    void UpdateDestAndLook()
+    {
         Vector3 dest = (GetModulePos(currentModule, aIBehaviour) - transform.position).normalized;
         Vector2 destWithoutY = new Vector2(dest.x, dest.z);
         characterInfo.movementInput = destWithoutY;
@@ -117,7 +122,7 @@ public class AICharacterController : CharacterBase
 
     private void OnDrawGizmos()
     {
-        if (this.sensor = null) return;
+        if (this.sensor == null) return;
         Vector3 dest = (GetModulePos(currentModule, aIBehaviour) - transform.position).normalized;
         Gizmos.color = Color.red;
 
@@ -127,7 +132,8 @@ public class AICharacterController : CharacterBase
     void ExecuteAction(ModuleType type, ModuleStats stats)
     {
         currentModule = type;
-        
+        UpdateDestAndLook();
+
         switch (type)
         {
             case ModuleType.Melee:
@@ -139,7 +145,8 @@ public class AICharacterController : CharacterBase
                 AttackRanged();
                 break;
             case ModuleType.Movement:
-                Debug.Log("Movement");
+                //Debug.Log("Movement");
+                MoveSkill();
                 break;
             case ModuleType.Signature:
                 Debug.Log("Signature");
