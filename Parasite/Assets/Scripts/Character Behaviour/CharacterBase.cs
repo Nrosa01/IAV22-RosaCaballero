@@ -34,4 +34,9 @@ public class CharacterBase : MonoBehaviour
         skills = _skills.GetNewInstance();
         skills.Init(this.gameObject);
     }
+
+    protected virtual void OnDestroy()
+    {
+        skills.Dispose();
+    }
 }

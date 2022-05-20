@@ -14,7 +14,6 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
 {
     //Gameplay
     public event Action<Vector2> moveEvent;
-    ContinuosInputAction attackAction;
     ContinuosInputAction attackRangedAction;
     public event Action attackMeleeEvent;
     public event Action<Vector2> attackRangeEvent;
@@ -31,7 +30,6 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
 
     private void OnEnable()
     {
-        attackAction = new ContinuosInputAction(() => attackMeleeEvent?.Invoke());
         attackRangedAction = new ContinuosInputAction(() => attackRangeEvent?.Invoke(dir));
         
         if (gameInput == null)
@@ -87,15 +85,16 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
 
     private void OnDisable()
     {
+        Debug.Log("Disabling input");
+
         DisableAllInput();
-        attackAction?.Dispose();
         attackRangedAction?.Dispose();
         InputSystem.onEvent -= OnInputEvent;
     }
 
     public void OnAttackMelee(InputAction.CallbackContext context)
     {
-        attackAction.Callback(context.phase);
+        if (context.phase == InputActionPhase.Performed) attackMeleeEvent?.Invoke();
     }
     public void OnAttackRanged(InputAction.CallbackContext context)
     {
@@ -107,18 +106,18 @@ public class InputReader : ScriptableObject, GameInput.IGameplayActions
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (dashEvent != null && context.phase == InputActionPhase.Performed) dashEvent.Invoke();
+        if (context.phase == InputActionPhase.Performed) dashEvent?.Invoke();
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (moveEvent != null && context.phase == InputActionPhase.Performed) moveEvent?.Invoke(context.ReadValue<Vector2>());
-        if (finishMoveEvent != null && context.phase == InputActionPhase.Canceled) finishMoveEvent?.Invoke();
+        if (context.phase == InputActionPhase.Performed) moveEvent?.Invoke(context.ReadValue<Vector2>());
+        if (context.phase == InputActionPhase.Canceled) finishMoveEvent?.Invoke();
     }
 
     public void OnPause(InputAction.CallbackContext context)
     {
-        if (pauseEvent != null && context.phase == InputActionPhase.Performed) pauseEvent.Invoke();
+        if (context.phase == InputActionPhase.Performed) pauseEvent?.Invoke();
     }
 
     public void EnableGameplayInput()

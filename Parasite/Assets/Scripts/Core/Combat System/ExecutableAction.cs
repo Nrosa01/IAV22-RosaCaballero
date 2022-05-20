@@ -7,10 +7,6 @@ using UnityEngine;
 public abstract class ExecutableAction : IExecutableAction<ExecutableAction>, IDisposable
 {
     public ExecutableAction() { }
-    ~ExecutableAction()
-    {
-        cancellationToken.Dispose();
-    }
 
     public ExecutableAction(ExecutableAction actionToCopy)
     {
@@ -125,5 +121,8 @@ public abstract class ExecutableAction : IExecutableAction<ExecutableAction>, ID
 
     public abstract ExecutableAction Clone();
 
-    public abstract void Dispose();
+    public virtual void Dispose()
+    {
+        cancellationToken.Dispose();
+    }
 }

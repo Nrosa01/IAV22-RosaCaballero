@@ -13,17 +13,15 @@ using UnityEngine.InputSystem;
 public class ContinuosInputAction : IDisposable
 {
     Action action;
-    bool executing;
-    private CancellationTokenSource cancellActionToken = new CancellationTokenSource();
+    bool executing, isDisposed;
 
     public ContinuosInputAction(Action action)
     {
-        Assert.IsNotNull(action);
         this.action = action;
         executing = false;
+        isDisposed = false;
 
-        cancellActionToken = new CancellationTokenSource();
-        Perform(cancellActionToken.Token).Forget();
+        Perform().Forget();
     }
 
     public void Callback(InputActionPhase phase)
@@ -36,17 +34,16 @@ public class ContinuosInputAction : IDisposable
 
     public void Dispose()
     {
-        cancellActionToken.Cancel();
-        cancellActionToken.Dispose();
+        isDisposed = true;
     }
 
-    private async UniTaskVoid Perform(CancellationToken cancellation)
+    private async UniTaskVoid Perform()
     {
-        while (true)
+        while (!isDisposed)
         {
-            if(executing)
+            if (executing)
                 action.Invoke();
-            await UniTask.Yield(cancellation);
+            await UniTask.Yield();
         }
     }
 }

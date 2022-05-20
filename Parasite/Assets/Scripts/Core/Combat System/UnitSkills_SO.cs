@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -24,7 +25,7 @@ public class UnitSkills_SO : ScriptableObject
 /// Internamente implementa un buffer compartido para todos los tipos de acciones y tiene una referencia al Gameobject que la usa
 /// </summary>
 [System.Serializable]
-public class UnitSkills
+public class UnitSkills : IDisposable
 {
     ActionBuffer buffer = new ActionBuffer();
     GameObject unit;
@@ -122,5 +123,13 @@ public class UnitSkills
         skills.signatureActions = new SkillSet<CancellableSpawneableAction>(UnitSkills_SO.ParseAction(signatureActions));
 
         return skills;
+    }
+
+    public void Dispose()
+    {
+        meleeActions.Dispose();
+        rangedActions.Dispose();
+        movementActions.Dispose();
+        signatureActions.Dispose();
     }
 }

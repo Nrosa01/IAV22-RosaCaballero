@@ -27,8 +27,8 @@ public class TargetComponent : CharacterComponent
         base.Start();
         main = Camera.main;
 
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Confined;
+        //Cursor.visible = false;
 
         rnd = target.GetComponent<MeshRenderer>();
     }
