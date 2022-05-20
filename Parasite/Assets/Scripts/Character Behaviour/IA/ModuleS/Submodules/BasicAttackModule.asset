@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a68b92ef07b49ca4db0b357b694e0cd5, type: 3}
   m_Name: BasicAttackModule
   m_EditorClassIdentifier: 
-  maxRepetitions: 4
-  secondsToReset: 2
+  maxRepetitions: 3
+  secondsToReset: 4
