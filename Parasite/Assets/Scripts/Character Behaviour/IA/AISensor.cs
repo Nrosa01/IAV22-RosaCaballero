@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Sensor basico para la IA, permite detectar proyectiles, trackear la posición del jugador
+/// y proximamente tambien ataques melee y obstaculos.
+/// </summary>
 public class AISensor : MonoBehaviour
 {
     [SerializeField] Transform target;

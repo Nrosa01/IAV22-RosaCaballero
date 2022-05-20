@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Sistema de pooling propio para reusar gameobjects
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class MonoPoolGeneric<T> : ObjectPoolGeneric<T> where T : MonoBehaviour, IPoolable, new()
 {
     public MonoPoolGeneric(T prefab) : base(prefab) { }
@@ -38,6 +42,12 @@ public class MonoPoolGeneric<T> : ObjectPoolGeneric<T> where T : MonoBehaviour, 
     }
 }
 
+/// <summary>
+/// Sistema de pooling para reusar cualquier tipo de objeto en general, "new()" es para asegurar que el objeto
+/// que se guarda en la pool esta en el heap en vez de en el stack y que por tanto no se destruya mientras
+/// este en la pool de forma aleatoria
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class ObjectPoolGeneric<T> where T : IPoolable, new()
 {
     protected Queue<T> pool;

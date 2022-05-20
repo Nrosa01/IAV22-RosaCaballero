@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
 
+/// <summary>
+/// Buffer generico, se podria interpretar como una lista de datos limitadas que va ciclando y ejecuta
+/// logica extra al añadir o eliminar un elemento.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class Buffer<T>
 {
     public List<T> buffer;
@@ -35,6 +40,10 @@ public class Buffer<T>
         buffer.Clear();
     }
 }
+
+/// <summary>
+/// Buffer especifico para acciones
+/// </summary>
 public class ActionBuffer : Buffer<IExecutableAction> 
 {
     public ActionBuffer(int maxSize = 3) : base(maxSize) {}

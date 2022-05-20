@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
+/// <summary>
+/// Proyectil simple para testear los ataques a distancia, usa una pool estática de forma que las instancias se reutilizan.
+/// Lo ideal sería obtener la pool de un scriptable y que no sea estática pero por cuestiones de tiempo lo he hecho de esta forma. A nivel de
+/// funcionalidad es igual, solo es un poco peor a nivel de arquitectura.
+/// </summary>
 public class SimpleProjectile : CancellableAction, IPoolable
 {
     public static MonoPoolGeneric<SimpleProjectile> pool;

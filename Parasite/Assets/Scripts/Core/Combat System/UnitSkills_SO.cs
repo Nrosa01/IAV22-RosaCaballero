@@ -19,6 +19,10 @@ public class UnitSkills_SO : ScriptableObject
     public UnitSkills GetNewInstance() => UnitSkills.GetNewInstance(meleeActions, rangedActions, movementActions, signatureActions);
 }
 
+/// <summary>
+/// Clase que gestiona las habilidades de una unidad, permite ejecutar las acciones, cancelarlas, comprobar si hay alguna ejectuándose...
+/// Internamente implementa un buffer compartido para todos los tipos de acciones y tiene una referencia al Gameobject que la usa
+/// </summary>
 [System.Serializable]
 public class UnitSkills
 {

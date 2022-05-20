@@ -3,6 +3,9 @@ using System;
 using System.Threading;
 using UnityEngine;
 
+/// <summary>
+/// Clase base para acciones spawneable, reusables y cancelables que implementan funcionalidad básica para manejarlos.
+/// </summary>
 public abstract class CancellableAction : MonoBehaviour
 {
     [Header("Important")]

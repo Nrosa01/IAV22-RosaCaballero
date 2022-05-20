@@ -5,6 +5,9 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Slash configurable en el editor con gizmos que ademá es spawneable y reusable
+/// </summary>
 public class BasicSlash : CancellableAction
 {
     [SerializeField] private Transform _start, _center, _end;

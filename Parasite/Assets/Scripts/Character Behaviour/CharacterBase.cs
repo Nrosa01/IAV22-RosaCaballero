@@ -5,6 +5,10 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Clase base que permite controlar un personaje. Necesita recibir skills desde el inspector (aunque también podría recibirlos por addressables).
+/// Esta clase define métodos básicos para que una IA o un jugador con Input puedan controlar el personaje abstrayendo el funcionamiento interno.
+/// </summary>
 public class CharacterBase : MonoBehaviour
 {
     [SerializeField] UnitSkills_SO _skills;

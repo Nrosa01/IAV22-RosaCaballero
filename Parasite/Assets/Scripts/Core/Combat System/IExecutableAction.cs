@@ -3,6 +3,7 @@ using System;
 using System.Threading;
 using UnityEngine;
 
+// Interfaz basica para implementar una accion
 public interface IExecutableAction
 {
     public IExecutableAction priorExecutableAction { get; set; }
@@ -40,4 +41,6 @@ public interface IExecutableAction
     
 }
 
+// Esta interfaz fuerza a que las acciones sean clonables y devuelvan el tipo correcto. Necesito clonar los datos de los scriptable objects 
+// para no modificarlos en runtime, ya que son persistentes y deben ser de solo lectura.
 public interface IExecutableAction<T> : IExecutableAction, IClonable<T> { }

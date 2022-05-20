@@ -7,6 +7,9 @@ public enum DeviceType { Keyboard, Mouse, Gamepad, Unknown };
 
 [CreateAssetMenu(fileName = "InputReader", menuName = "Game/Input Reader")]
 
+///
+/// Clase intermedia para separar el input de la accion que realiza. De esta forma no sabemos que input va a desatar la accion y nos permite desacoplarlo.
+///
 public class InputReader : ScriptableObject, GameInput.IGameplayActions
 {
     //Gameplay

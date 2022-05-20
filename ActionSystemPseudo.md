@@ -3,31 +3,31 @@
 ```csharp
 
 // Habria que implementar una clase a parte, ya que las interfaces no permiten definir el cuerpo de los metodos
-public interface IExecutableAction
+interface IExecutableAction
 {
-    public CancellationTokenSource cancellationToken = new CancellationTokenSource();
+    cancellationToken: CancellationTokenSource;
 
-    public IExecutableAction priorExecutableAction { get; set; }
+    priorExecutableAction: IExecutableAction ;
     
     // Esto no es el tiempo que tarda en realizarse la acción, es el tiempo que está en el buffer
     // antes de ser descartada.
-    public float DurationInBuffer { get; set; } 
-    public float PostRecheckTime { get; set; }
-    public float TimeLeft { get; set; }
-    public bool IsExecuting { get; set; }
+    DurationInBuffer: float;
+    PostRecheckTime: float;
+    TimeLeft: float;
+    IsExecuting: bool;
 
-    void Execute();
+    func Execute(); -> void
 
     // Usually here we see if the last action finished executing
-    virtual bool CheckCanExecute() => !priorExecutableAction.IsExecuting;
+    func CheckCanExecute() => !priorExecutableAction.IsExecuting; -> bool
 
-    public event Action ActionExecuted;
-    public event Action ActionCancelled;
+    event Action ActionExecuted;
+    event Action ActionCancelled;
 
     //Buffer related stuff
     Buffer<T> _buffer;
 
-    public void OnActionInserted(Buffer<T> buffer)
+    func OnActionInserted(Buffer<T> buffer)
     {
         _buffer = buffer;
         TimeLeft = DurationInBuffer;
@@ -36,7 +36,7 @@ public interface IExecutableAction
         RecheckLoop(cancellationToken.Token).Forget();
     }
 
-    public void OnActionRemoved()
+    func OnActionRemoved() -> void
     {
         cancellationToken.Cancel();
     }
@@ -46,7 +46,7 @@ public interface IExecutableAction
         cancellationToken.Dispose();
     }
 
-    async UniTaskVoid ActionInBufferDuration(CancellationToken cancellation)
+    async func ActionInBufferDuration(CancellationToken cancellation) -> asyncFunc
     {
         while (TimeLeft > 0)
         {
@@ -56,7 +56,7 @@ public interface IExecutableAction
         _buffer.Remove(this);
     }
 
-    async UniTaskVoid RecheckLoop(CancellationToken cancellation)
+    async func RecheckLoop(CancellationToken cancellation) -> asyncFunc
     {
         while (true)
         {
@@ -71,7 +71,7 @@ public interface IExecutableAction
         }
     }
 
-    void CancelExecution()
+    func CancelExecution() -> void
     {
         if(IsExecuting)
         {
@@ -88,10 +88,10 @@ public interface IExecutableAction
 
 ```csharp
 
-    public class MeleeAction : IExecutableAction {}
-    public class RangedAction : IExecutableAction {}
-    public class  MovementAction : IExecutableAction {}
-    public class SignatureAction : IExecutableAction {}
+    class MeleeAction extends IExecutableAction {}
+    class RangedAction extends IExecutableAction {}
+    class  MovementAction extends IExecutableAction {}
+    class SignatureAction extends IExecutableAction {}
 
 ```
 
@@ -113,8 +113,8 @@ automaticamente del buffer si no se han ejecutado en x tiempo. Si el buffer est�
 
 class Buffer<T>
 {
-    public List<T> buffer;
-    public int maxSize = 3;
+    buffer: List<T>;
+    maxSize: int = 3;
 
     public Buffer(int maxSize = 3 )
     {
@@ -122,7 +122,7 @@ class Buffer<T>
         buffer = new List<T>();
     }
 
-    public void Add(T action)
+    func Add(T action) -> void
     {
         if(buffer.Count == maxSize)
             buffer.RemoveAt(0);
@@ -131,18 +131,18 @@ class Buffer<T>
         action.OnInserted(this);
     }
 
-    public void Remove(T action)
+    func Remove(T action) -> void
     {
         buffer.Remove(action);
         action.OnRemoved(this);
     }
 
-    public T GetLastAction()
+    func GetLastAction() -> T
     {
         return buffer.Last();
     }
 
-    public void Clear()
+    func Clear() -> void
     {
         buffer.Clear();
     }
@@ -154,11 +154,11 @@ class Buffer<T>
     
     ```csharp
 
-    public class SkillSet<T> : where T : IExecutableAction
+    public class SkillSet<T> where T extends IExecutableAction
     {
-        int currentSkill = 0;
+        currentSkill: int;
 
-        public List<IExecutableAction> skills;
+        skills: List<IExecutableAction>;
 
         public SkillSet(List<IExecutableAction> skills)
         {
@@ -184,22 +184,22 @@ class Buffer<T>
             }
         }
 
-        public void Add(IExecutableAction skill)
+        func Add(IExecutableAction skill) -> void
         {
             skills.Add(skill);
         }
 
-        public void Remove(IExecutableAction skill)
+        func Remove(IExecutableAction skill) -> void
         {
             skills.Remove(skill);
         }
 
-        public T GetCurrentSkill()
+        func GetCurrentSkill() -> T
         {
             return skills[currentSkill];
         }
 
-        public T GetNextSkill()
+        func GetNextSkill() -> T
         {
             currentSkill++;
             if(currentSkill >= skills.Count)
@@ -208,7 +208,7 @@ class Buffer<T>
             return skills[currentSkill];
         }
 
-        void CancelCurrentSkill()
+        func CancelCurrentSkill() -> void
         {
             int skillBefore = currentSkill - 1;
             if(skillBefore < 0)
@@ -221,7 +221,7 @@ class Buffer<T>
         }
     }
 
-    public class UnitSkills : ScriptableObject
+    public class UnitSkills extends ScriptableObject
     {
         Buffer<IExecutableAction> buffer;
 
@@ -230,7 +230,7 @@ class Buffer<T>
         SkillSet<MovementAction> movementActions;
         SkillSet<SignatureAction> signatureActions;
 
-        public void CancelCurrentAction()
+        func CancelCurrentAction() -> void
         {
             // We dont't know which type of action is the current one
             // So we cancel all of them
@@ -242,35 +242,35 @@ class Buffer<T>
             buffer.Clear();
         }
 
-        public void ExecuteMeleeAction()
+        func ExecuteMeleeAction() -> void
         {
             buffer.Add(meleeActions.GetCurrentSkill());
         }
 
-        public void ExecuteRangedAction()
+        func ExecuteRangedAction() -> void
         {
             buffer.Add(rangedActions.GetCurrentSkill());
         }
 
-        public void ExecuteMovementAction()
+        func ExecuteMovementAction() -> void
         {
             buffer.Add(movementActions.GetCurrentSkill());
         }
 
-        public void ExecuteSignatureAction()
+        func ExecuteSignatureAction() -> void
         {
             buffer.Add(signatureActions.GetCurrentSkill());
         }
 
-        public GetNewInstance() => ScriptableObject.CreateInstance<UnitSkills>();
+        func GetNewInstance() => ScriptableObject.CreateInstance<UnitSkills>(); -> void
     }
 
-        public class Unit : Monobehaviour
+        public class Unit extends Monobehaviour
         {
-            [SerializeField] public InputReader _inputReader = default;
-            [SerializeField] UnitSkills _skills;
+            _inputReader: InputReader;
+            _skills: UnitSkills;
 
-            private void Awake()
+            func Awake() -> void
             {
                 _skills = _skills.GetNewInstance();
                 _inputReader.OnMeleeAction += _skills.ExecuteMeleeAction;
@@ -279,7 +279,7 @@ class Buffer<T>
                 _inputReader.OnSignatureAction += _skills.ExecuteSignatureAction;
             }
 
-            private void OnDestroy()
+            func OnDestroy() -> void
             {
                 _inputReader.OnMeleeAction -= _skills.ExecuteMeleeAction;
                 _inputReader.OnRangedAction -= _skills.ExecuteRangedAction;
@@ -287,7 +287,7 @@ class Buffer<T>
                 _inputReader.OnSignatureAction -= _skills.ExecuteSignatureAction;
             }
 
-            private void OnCollisionEnter(Collision collision)
+            func OnCollisionEnter(Collision collision) -> void
             {
                 if(collision.gameObject.CompareTag("Enemy"))
                 {

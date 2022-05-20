@@ -17,6 +17,7 @@
     - [Posición óptima](#posición-óptima)
 - [Pseudocodigo](#pseudocodigo)
 - [Controles](#controles)
+- [Referencias](#referencias)
 
 # Descripción del proyecto
 
@@ -147,7 +148,7 @@ Devuelve la posición más óptima que aumente la tasa de acierto independientem
 
 #  Pseudocodigo
 
-El pseudocodigo de este proyecto puede llegar a ser extenso, por lo cual lo he dividido por partes para facilitar la lectura. Estas partes están en archivos separados a los que se accede a través de los links que pondré a continuación. Cabe mencionar que el estilo de Pseudocodigo que he elegido es uno propio, tratando de que se parezca a C# y usando su nomenclatura. Considero que si el proyecto va a ser escrito en C#, hacer que el pseudocodigo sea similar y use características propias del lenguaje facilita la integración. El pseudocodigo tendrá anotaciones en Español, pero los comentarios del código en sí serán en inglés, ya que me gusta desarrollar en inglés.
+El pseudocodigo de este proyecto puede llegar a ser extenso, por lo cual lo he dividido por partes para facilitar la lectura. Estas partes están en archivos separados a los que se accede a través de los links que pondré a continuación. El pseudocodigo tendrá anotaciones en Español, pero los comentarios del código en sí serán en inglés, ya que me gusta desarrollar en inglés.
 
  - [Pseudocodigo del buffer de acciones](ActionSystemPseudo.md)
  - [Pseudocodigo del sistema de IA](IASystemPseudo.md)
@@ -156,3 +157,29 @@ El pseudocodigo de este proyecto puede llegar a ser extenso, por lo cual lo he d
 
 En este apartado se describirá como se controla el juego. Cabe destacar que aunque el juego soporta gamepad o teclado y ratón, es recomendable jugarlo con mando ya que ha sido diseñado para ser jugado con con un gamepad, además, si la disposición de botones es tipo XBOX es aún más cómod que si la disposición es tipo PS4/PS5.
 
+Moverse:
+ - AWSD
+ - Joystick izquierdo
+
+Ataque melee:
+ - Botón izquierdo del ratón
+ - Botón X en el mando de xbox, o B en el mando de PS4/PS5
+
+Habilidad de movimiento (dash)
+ - Espacio en el teclado
+ - Botón A en el mando de xbox, o X en el mando de PS4/PS5
+
+Ataque de rango:
+  - Botón derecho del ratón
+  - Joystick derecho
+
+Habilidad especial:
+  - No implementada
+
+# Referencias
+
+- [Rain World GDC](https://www.youtube.com/watch?v=sVntwsrjNe4&pp=ugMICgJlcxABGAE%3D)
+- Furi - Making Of [(Serie en youtube)](https://www.youtube.com/watch?v=sJ77Gq5y8G8&t=34s)
+- [AI con Scriptable Objects](https://www.youtube.com/watch?v=cHUXh5biQMg&list=PLX2vGYjWbI0ROSj_B0_eir_VkHrEkd4pi)
+- Unity 2018 Artificial Intelligence Cookbook, Second Edition (PDF)
+- AI for Game Developers O'Reilly (PDF)

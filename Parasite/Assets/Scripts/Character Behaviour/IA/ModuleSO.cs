@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Modulo basico para implementar la IA del enemigo. El modulo se puede extender mediante herencia y permite
+/// delimitar cuantas veces se ejecuta por tiempo al heredar de él sin tener que hacer nada más
+/// </summary>
 public abstract class ModuleSO : ScriptableObject
 {
     public int maxRepetitions = 5;

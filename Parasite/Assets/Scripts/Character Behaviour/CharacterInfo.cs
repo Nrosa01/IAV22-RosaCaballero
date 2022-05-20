@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Clase contenedora de datos que usan las acciones y otros sistemas para interactuar con el personaje que las ha lanzado.
+/// </summary>
 public class CharacterInfo
 {
     public CharacterInfo(CharacterBase character)
