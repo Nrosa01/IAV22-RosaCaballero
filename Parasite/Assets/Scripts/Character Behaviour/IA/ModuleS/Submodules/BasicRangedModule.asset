@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BasicRangedModule
   m_EditorClassIdentifier: 
   maxRepetitions: 5
-  secondsToReset: 3
+  secondsToReset: 5
   distanceToKeepFromTarget: 4

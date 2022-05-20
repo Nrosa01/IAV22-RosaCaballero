@@ -66,6 +66,14 @@ public class BasicSlash : CancellableAction
         Gizmos.DrawSphere(_center.position, 0.2f);
     }
 
+    public void OnTriggerEnterCallback(Collider other)
+    {
+        Vector3 collisionDir = (other.transform.position - character.characterInfo.transform.position).normalized;
+
+        if (other.gameObject != character.gameObject && other.gameObject.TryGetComponent(out KnockbackHandler handler))
+            handler.Knockback(collisionDir, 20);
+    }
+
     IEnumerable<Vector3> EvaluateSlerpPoints(Vector3 start, Vector3 end, Vector3 center, int count = 10)
     {
         var f = 1f / count;

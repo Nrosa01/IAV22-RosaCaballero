@@ -14542,6 +14542,7 @@ GameObject:
   - component: {fileID: 5426493930815663904}
   - component: {fileID: 3564720426728858811}
   - component: {fileID: 6559715022173508576}
+  - component: {fileID: 2001674152242014774}
   m_Layer: 0
   m_Name: Attack
   m_TagString: Untagged
@@ -14628,8 +14629,35 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 4, y: 4, z: 1.25}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2001674152242014774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5237322608603585121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e170c5af64d6b848984fc0cb2a08b8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnTrigger:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7023637099497667740}
+        m_TargetAssemblyTypeName: BasicSlash, Assembly-CSharp
+        m_MethodName: OnTriggerEnterCallback
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8617359127468751778
 GameObject:
   m_ObjectHideFlags: 0

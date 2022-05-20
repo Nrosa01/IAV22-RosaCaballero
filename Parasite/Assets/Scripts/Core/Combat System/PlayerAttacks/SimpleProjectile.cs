@@ -54,6 +54,11 @@ public class SimpleProjectile : CancellableAction, IPoolable
     {
         if (other.gameObject != character.gameObject && !other.gameObject.CompareTag(StaticTags.InvisibleBounds))
             Despawn();
+
+        Vector3 collisionDir = (other.transform.position - character.characterInfo.transform.position).normalized;
+
+        if (other.gameObject != character.gameObject && other.gameObject.TryGetComponent(out KnockbackHandler handler))
+            handler.Knockback(collisionDir, 10);
     }
 
     [System.Serializable]
